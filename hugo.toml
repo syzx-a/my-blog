@@ -22,6 +22,18 @@ theme = 'PaperMod'
       name = '图文'
       url = '/posts/'
     [[params.profileMode.buttons]]
+      name = '摄影'
+      url = '/gallery/'
+    [[params.profileMode.buttons]]
+      name = '图文'
+      url = '/posts/'
+    [[params.profileMode.buttons]]
+      name = '摄影'
+      url = '/gallery/'
+    [[params.profileMode.buttons]]
+      name = '视频'
+      url = '/videos/'
+    [[params.profileMode.buttons]]
       name = '直播'
       url = '/live/'
     [[params.profileMode.buttons]]
