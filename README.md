@@ -8,8 +8,8 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/your-repo.git
-cd your-repo
+git clone https://github.com/syzx-a/my-blog.git
+cd my-blog
 
 # 初始化子模块（主题）
 git submodule update --init --recursive
