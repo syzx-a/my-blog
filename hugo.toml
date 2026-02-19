@@ -7,9 +7,26 @@ theme = 'PaperMod'
   author = '实用哲学'
   description = '儒释道经典智慧，哲学深度思考，传统文化传承'
   keywords = ['国学', '传统文化', '儒释道', '哲学', '智慧', '经典']
-  enableGoogleAnalytics = false
+  defaultTheme = 'auto'
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+  comments = false
+  hidemeta = false
+  hideSummary = false
+  showtoc = true
+  tocopen = false
   
-  # 首页设置
+  [params.assets]
+    favicon = '/favicon.ico'
+    favicon16x16 = '/favicon-16x16.png'
+    favicon32x32 = '/favicon-32x32.png'
+    apple_touch_icon = '/apple-touch-icon.png'
+    
   [params.profileMode]
     enabled = true
     title = '实用哲学'
@@ -19,19 +36,30 @@ theme = 'PaperMod'
     imageHeight = 150
     
     [[params.profileMode.buttons]]
-      name = '经典解读'
+      name = '📖 经典解读'
       url = '/posts/'
     [[params.profileMode.buttons]]
-      name = '儒释道'
+      name = '☯️ 儒释道'
       url = '/wisdom/'
     [[params.profileMode.buttons]]
-      name = '哲学思考'
+      name = '🤔 哲学思考'
       url = '/philosophy/'
     [[params.profileMode.buttons]]
-      name = '关于'
+      name = '👤 关于'
       url = '/about/'
 
-  # 社交链接
+  [params.homeInfoParams]
+    Title = '实用哲学'
+    Content = '''
+### 传承千年智慧，启迪当代人生
+
+📚 **经典解读** - 深入浅出解读儒释道经典  
+🧘 **修身养性** - 古代智慧的现代应用  
+💡 **哲学思考** - 探索人生的意义与价值
+
+> "知之为知之，不知为不知，是知也" —— 孔子
+'''
+
   [[params.socialIcons]]
     name = 'weixin'
     url = '#'
@@ -45,20 +73,11 @@ theme = 'PaperMod'
     name = 'email'
     url = 'mailto:contact@example.com'
 
-  # 评论系统 (Giscus)
-  [params.giscus]
-    repo = 'yourusername/your-repo'
-    repoId = 'your-repo-id'
-    category = 'Announcements'
-    categoryId = 'your-category-id'
-    mapping = 'pathname'
-    reactionsEnabled = '1'
-    emitMetadata = '0'
-    inputPosition = 'bottom'
-    theme = 'light'
-    lang = 'zh-CN'
+  [params.editPost]
+    URL = 'https://github.com/syzx-a/my-blog/tree/main/content'
+    Text = '建议修改'
+    appendFilePath = true
 
-  # 搜索
   [params.fuseOpts]
     isCaseSensitive = false
     shouldSort = true
@@ -68,34 +87,61 @@ theme = 'PaperMod'
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
-# 菜单
 [menu]
   [[menu.main]]
     identifier = 'posts'
-    name = '经典解读'
+    name = '📖 经典解读'
     url = '/posts/'
     weight = 10
   [[menu.main]]
     identifier = 'wisdom'
-    name = '儒释道'
+    name = '☯️ 儒释道'
     url = '/wisdom/'
     weight = 20
   [[menu.main]]
     identifier = 'philosophy'
-    name = '哲学思考'
+    name = '🤔 哲学思考'
     url = '/philosophy/'
     weight = 30
   [[menu.main]]
-    identifier = 'about'
-    name = '关于'
-    url = '/about/'
+    identifier = 'search'
+    name = '🔍 搜索'
+    url = '/search/'
     weight = 40
+  [[menu.main]]
+    identifier = 'about'
+    name = '👤 关于'
+    url = '/about/'
+    weight = 50
 
-# 输出格式
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
-# 分类
 [taxonomies]
   category = 'categories'
   tag = 'tags'
+  series = 'series'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    hl_inline = false
+    lineAnchors = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    noHl = false
+    style = "monokai"
+    tabWidth = 4
+
+[markup.tableOfContents]
+  endLevel = 3
+  ordered = false
+  startLevel = 2
