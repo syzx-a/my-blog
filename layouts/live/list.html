@@ -1,52 +1,48 @@
 {{ define "main" }}
 
-<div class="live-page">
+<div class="live-list">
   <header class="page-header">
     <h1>{{ .Title }}</h1>
-    {{ if .Description }}
-    <p class="page-description">{{ .Description }}</p>
+    {{ with .Content }}
+    <div class="page-content">
+      {{ . }}
+    </div>
     {{ end }}
   </header>
 
-  <div class="live-content">
-    {{ .Content }}
-  </div>
-
-  <section class="live-list">
-    <h2>📺 直播预告与回放</h2>
-    
-    {{ $livePages := where .Site.RegularPages "Section" "live" }}
-    {{ $sortedLive := sort $livePages "Params.livetime" "desc" }}
-    
-    {{ if $sortedLive }}
+  <section class="live-section">
+    <h2>即将开始的直播</h2>
+    {{ $upcoming := where .Pages "Params.livetime" "ge" (now.Format "2006-01-02T15:04:05") }}
+    {{ if $upcoming }}
     <div class="live-grid">
-      {{ range $sortedLive }}
-      <article class="live-card {{ if (time .Params.livetime).After now }}live-upcoming{{ else }}live-past{{ end }}">
-        <div class="live-status">
-          {{ if (time .Params.livetime).After now }}
-          <span class="badge badge-upcoming">即将开始</span>
-          {{ else }}
-          <span class="badge badge-past">已结束</span>
-          {{ end }}
-        </div>
-        
-        {{ if .Params.cover }}
-        <div class="live-cover">
-          <img src="{{ .Params.cover }}" alt="{{ .Title }}" loading="lazy">
-        </div>
-        {{ end }}
-        
-        <div class="live-info">
+      {{ range $upcoming }}
+      <article class="live-card upcoming">
+        <div class="live-header">
           <h3 class="live-title">
             <a href="{{ .Permalink }}">{{ .Title }}</a>
           </h3>
-          
+          {{ with .Params.cover }}
+          <div class="live-cover">
+            <img src="{{ . }}" alt="{{ $.Title }}" loading="lazy">
+          </div>
+          {{ end }}
+        </div>
+        
+        <div class="live-body">
           <div class="live-meta">
             <span class="live-time">
-              📅 {{ .Params.livetime | time.Format "2006年1月2日 15:04" }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ .Params.livetime | time.Format "2006年1月2日 15:04" }}
             </span>
             <span class="live-platform">
-              📺 {{ .Params.platform }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
+              {{ .Params.platform }}
             </span>
           </div>
           
@@ -54,7 +50,7 @@
           <p class="live-description">{{ .Params.description }}</p>
           {{ end }}
           
-          {{ if and .Params.link (time .Params.livetime).After now }}
+          {{ if .Params.link }}
           <a href="{{ .Params.link }}" class="live-link button" target="_blank" rel="noopener">
             前往直播间 →
           </a>
@@ -65,6 +61,39 @@
     </div>
     {{ else }}
     <p class="no-content">暂无直播预告，敬请期待！</p>
+    {{ end }}
+  </section>
+
+  <section class="live-section">
+    <h2>往期直播</h2>
+    {{ $past := where .Pages "Params.livetime" "lt" (now.Format "2006-01-02T15:04:05") }}
+    {{ if $past }}
+    <div class="live-grid">
+      {{ range $past }}
+      <article class="live-card past">
+        <div class="live-header">
+          <h3 class="live-title">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+          </h3>
+        </div>
+        
+        <div class="live-body">
+          <div class="live-meta">
+            <span class="live-time">
+              {{ .Params.livetime | time.Format "2006年1月2日" }}
+            </span>
+            <span class="live-platform">{{ .Params.platform }}</span>
+          </div>
+          
+          {{ if .Params.description }}
+          <p class="live-description">{{ .Params.description }}</p>
+          {{ end }}
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p class="no-content">暂无直播回放</p>
     {{ end }}
   </section>
 </div>
