@@ -1,5 +1,14 @@
 {
-  "github": {
-    "silent": true
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "hugo.toml",
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "curl -sL https://github.com/gohugoio/hugo/releases/download/v0.123.0/hugo_extended_0.123.0_linux-amd64.tar.gz | tar -xz",
+        "buildCommand": "./hugo --gc --minify",
+        "outputDirectory": "public"
+      }
+    }
+  ]
 }
