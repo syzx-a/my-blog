@@ -7,6 +7,7 @@ theme = 'PaperMod'
   author = '博主名字'
   description = '分享生活、旅行与创作的自媒体博主'
   keywords = ['博客', '自媒体', 'Vlog', '旅行']
+  enableGoogleAnalytics = false
   
   # 首页设置
   [params.profileMode]
