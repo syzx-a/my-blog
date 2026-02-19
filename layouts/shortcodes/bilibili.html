@@ -1,0 +1,21 @@
+{{/* 嵌入B站视频
+  使用方法：
+  {{< bilibili BV1xx411c7mD >}}
+  {{< bilibili BV1xx411c7mD 1 >}}  // 从第1页开始
+  {{< bilibili id=BV1xx411c7mD page=1 >}}
+*/}}
+
+{{ $id := .Get 0 | default (.Get "id") }}
+{{ $page := .Get 1 | default (.Get "page") | default 1 }}
+
+<div class="video-wrapper bilibili-wrapper">
+  <iframe 
+    src="https://player.bilibili.com/player.html?bvid={{ $id }}&page={{ $page }}&high_quality=1&danmaku=0"
+    scrolling="no" 
+    border="0" 
+    frameborder="no" 
+    framespacing="0" 
+    allowfullscreen="true"
+    loading="lazy"
+  ></iframe>
+</div>

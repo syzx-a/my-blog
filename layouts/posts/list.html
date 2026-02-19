@@ -1,0 +1,75 @@
+{{/* 文章列表页的布局 */}}
+
+{{ define "main" }}
+
+<div class="posts-list-page">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ if .Content }}
+    <div class="page-description">{{ .Content }}</div>
+    {{ end }}
+  </header>
+
+  {{ if .Params.tags }}
+  <div class="tags-filter">
+    <span>标签筛选：</span>
+    {{ range .Params.tags }}
+    <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="tag-link">{{ . }}</a>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <div class="posts-grid">
+    {{ range .Paginator.Pages }}
+    <article class="post-card">
+      {{ if .Params.cover }}
+      <a href="{{ .Permalink }}" class="post-card-cover">
+        <img src="{{ .Params.cover }}" alt="{{ .Title }}" loading="lazy">
+      </a>
+      {{ end }}
+      
+      <div class="post-card-content">
+        <h2 class="post-card-title">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h2>
+        
+        {{ if .Params.description }}
+        <p class="post-card-description">{{ .Params.description }}</p>
+        {{ else }}
+        <p class="post-card-summary">{{ .Summary | plainify | truncate 120 }}</p>
+        {{ end }}
+        
+        <div class="post-card-meta">
+          <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ .Date.Format "2006年1月2日" }}
+          </time>
+          
+          {{ if .Params.tags }}
+          <span class="post-card-tags">
+            {{ range first 3 .Params.tags }}
+            <span class="tag">#{{ . }}</span>
+            {{ end }}
+          </span>
+          {{ end }}
+        </div>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+
+  {{ if gt .Paginator.TotalPages 1 }}
+  <nav class="pagination">
+    {{ if .Paginator.HasPrev }}
+    <a href="{{ .Paginator.Prev.URL }}" class="prev">← 上一页</a>
+    {{ end }}
+    
+    <span class="page-info">第 {{ .Paginator.PageNumber }} 页，共 {{ .Paginator.TotalPages }} 页</span>
+    
+    {{ if .Paginator.HasNext }}
+    <a href="{{ .Paginator.Next.URL }}" class="next">下一页 →</a>
+    {{ end }}
+  </nav>
+  {{ end }}
+</div>
+
+{{ end }}

@@ -1,0 +1,21 @@
+{{/* 提示框/引用框
+  使用方法：
+  {{< notice info >}}这是信息提示{{< /notice >}}
+  {{< notice warning >}}这是警告提示{{< /notice >}}
+  {{< notice tip >}}这是技巧提示{{< /notice >}}
+  {{< notice danger >}}这是危险提示{{< /notice >}}
+*/}}
+
+{{ $type := .Get 0 | default "info" }}
+{{ $icons := dict "info" "ℹ️" "warning" "⚠️" "tip" "💡" "danger" "🚨" "success" "✅" }}
+{{ $icon := index $icons $type | default "ℹ️" }}
+
+<div class="notice notice-{{ $type }}">
+  <div class="notice-header">
+    <span class="notice-icon">{{ $icon }}</span>
+    <span class="notice-type">{{ $type | humanize }}</span>
+  </div>
+  <div class="notice-content">
+    {{ .Inner | markdownify }}
+  </div>
+</div>

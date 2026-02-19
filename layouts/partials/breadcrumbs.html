@@ -1,0 +1,27 @@
+{{/* 面包屑导航 */}}
+
+{{ if .Parent }}
+<nav class="breadcrumbs" aria-label="breadcrumb">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href="{{ .Site.Home.RelPermalink }}">首页</a>
+    </li>
+    
+    {{ if .Parent.Parent }}
+    <li class="breadcrumb-item">
+      <a href="{{ .Parent.Parent.RelPermalink }}">{{ .Parent.Parent.Title }}</a>
+    </li>
+    {{ end }}
+    
+    {{ if .Parent }}
+    <li class="breadcrumb-item">
+      <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
+    </li>
+    {{ end }}
+    
+    <li class="breadcrumb-item active" aria-current="page">
+      {{ .Title }}
+    </li>
+  </ol>
+</nav>
+{{ end }}

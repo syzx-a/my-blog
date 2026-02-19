@@ -1,0 +1,78 @@
+{{ define "main" }}
+
+<div class="live-single">
+  <article>
+    <header class="live-header">
+      {{ if (time .Params.livetime).After now }}
+      <div class="live-status-banner upcoming">
+        📅 直播预告 | {{ .Params.livetime | time.Format "1月2日 15:04" }}
+      </div>
+      {{ else }}
+      <div class="live-status-banner past">
+        ✅ 直播已结束 | 可查看回放
+      </div>
+      {{ end }}
+
+      <h1>{{ .Title }}</h1>
+      
+      <div class="live-meta">
+        <div class="meta-item">
+          <span class="meta-label">直播时间：</span>
+          <time datetime="{{ .Params.livetime }}">
+            {{ .Params.livetime | time.Format "2006年1月2日 15:04" }}
+          </time>
+        </div>
+        
+        <div class="meta-item">
+          <span class="meta-label">直播平台：</span>
+          <span class="platform-badge">{{ .Params.platform }}</span>
+        </div>
+      </div>
+    </header>
+
+    {{ if .Params.cover }}
+    <figure class="live-cover">
+      <img src="{{ .Params.cover }}" alt="{{ .Title }}" loading="lazy">
+    </figure>
+    {{ end }}
+
+    <div class="live-content">
+      {{ .Content }}
+    </div>
+
+    {{ if and .Params.link (time .Params.livetime).After now }}
+    <div class="live-cta">
+      <a href="{{ .Params.link }}" class="button button-primary button-large" target="_blank" rel="noopener">
+        🚀 前往直播间
+      </a>
+      <p class="cta-hint">点击上方按钮跳转到{{ .Params.platform }}直播间</p>
+    </div>
+    {{ end }}
+
+    {{ if and .Params.link (not ((time .Params.livetime).After now)) }}
+    <div class="live-cta">
+      <a href="{{ .Params.link }}" class="button button-secondary" target="_blank" rel="noopener">
+        📺 查看回放
+      </a>
+    </div>
+    {{ end }}
+  </article>
+
+  <nav class="post-nav">
+    {{ with .NextInSection }}
+    <a class="prev" href="{{ .Permalink }}">
+      <span>← 上一期</span>
+      <strong>{{ .Title }}</strong>
+    </a>
+    {{ end }}
+    
+    {{ with .PrevInSection }}
+    <a class="next" href="{{ .Permalink }}">
+      <span>下一期 →</span>
+      <strong>{{ .Title }}</strong>
+    </a>
+    {{ end }}
+  </nav>
+</div>
+
+{{ end }}

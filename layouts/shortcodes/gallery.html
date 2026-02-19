@@ -1,0 +1,12 @@
+{{/* 图片画廊
+  使用方法：
+  {{< gallery >}}
+    ![描述1](/images/1.jpg)
+    ![描述2](/images/2.jpg)
+    ![描述3](/images/3.jpg)
+  {{< /gallery >}}
+*/}}
+
+<div class="gallery">
+  {{ .Inner | markdownify }}
+</div>

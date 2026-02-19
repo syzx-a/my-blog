@@ -1,0 +1,72 @@
+{{ define "main" }}
+
+<div class="live-page">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ if .Description }}
+    <p class="page-description">{{ .Description }}</p>
+    {{ end }}
+  </header>
+
+  <div class="live-content">
+    {{ .Content }}
+  </div>
+
+  <section class="live-list">
+    <h2>📺 直播预告与回放</h2>
+    
+    {{ $livePages := where .Site.RegularPages "Section" "live" }}
+    {{ $sortedLive := sort $livePages "Params.livetime" "desc" }}
+    
+    {{ if $sortedLive }}
+    <div class="live-grid">
+      {{ range $sortedLive }}
+      <article class="live-card {{ if (time .Params.livetime).After now }}live-upcoming{{ else }}live-past{{ end }}">
+        <div class="live-status">
+          {{ if (time .Params.livetime).After now }}
+          <span class="badge badge-upcoming">即将开始</span>
+          {{ else }}
+          <span class="badge badge-past">已结束</span>
+          {{ end }}
+        </div>
+        
+        {{ if .Params.cover }}
+        <div class="live-cover">
+          <img src="{{ .Params.cover }}" alt="{{ .Title }}" loading="lazy">
+        </div>
+        {{ end }}
+        
+        <div class="live-info">
+          <h3 class="live-title">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+          </h3>
+          
+          <div class="live-meta">
+            <span class="live-time">
+              📅 {{ .Params.livetime | time.Format "2006年1月2日 15:04" }}
+            </span>
+            <span class="live-platform">
+              📺 {{ .Params.platform }}
+            </span>
+          </div>
+          
+          {{ if .Params.description }}
+          <p class="live-description">{{ .Params.description }}</p>
+          {{ end }}
+          
+          {{ if and .Params.link (time .Params.livetime).After now }}
+          <a href="{{ .Params.link }}" class="live-link button" target="_blank" rel="noopener">
+            前往直播间 →
+          </a>
+          {{ end }}
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p class="no-content">暂无直播预告，敬请期待！</p>
+    {{ end }}
+  </section>
+</div>
+
+{{ end }}

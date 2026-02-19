@@ -1,0 +1,25 @@
+{{/* 嵌入抖音视频
+  使用方法：
+  {{< douyin 1234567890 >}}
+*/}}
+
+{{ $id := .Get 0 | default (.Get "id") }}
+
+<div class="video-wrapper douyin-wrapper">
+  <blockquote class="tiktok-embed" cite="https://www.douyin.com/video/{{ $id }}" data-video-id="{{ $id }}" >
+    <section>
+      <a target="_blank" href="https://www.douyin.com/video/{{ $id }}">查看视频</a>
+    </section>
+  </blockquote>
+  <script async src="https://www.douyin.com/node/share/embed""></script>
+</div>
+
+<!-- 简化版：直接提供链接 -->
+<div class="video-card">
+  <a href="https://www.douyin.com/video/{{ $id }}" target="_blank" rel="noopener" class="video-link">
+    <div class="video-placeholder">
+      <span class="video-icon">▶️</span>
+      <span class="video-text">在抖音观看视频</span>
+    </div>
+  </a>
+</div>

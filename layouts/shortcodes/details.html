@@ -1,0 +1,15 @@
+{{/* 折叠/展开内容
+  使用方法：
+  {{< details "点击展开" >}}
+  隐藏的内容
+  {{< /details >}}
+*/}}
+
+{{ $summary := .Get 0 | default (.Get "summary") | default "点击展开" }}
+
+<details class="details">
+  <summary>{{ $summary }}</summary>
+  <div class="details-content">
+    {{ .Inner | markdownify }}
+  </div>
+</details>

@@ -1,0 +1,74 @@
+backend:
+  name: github
+  branch: main
+  repo: yourusername/your-repo
+
+# 发布模式：简单模式（直接提交）或编辑工作流模式
+publish_mode: editorial_workflow
+
+# 媒体文件夹
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+# 站点URL（用于预览链接）
+site_url: https://yourdomain.com
+
+# 显示选项
+show_preview_links: true
+
+# 集合（内容类型）
+collections:
+  # 图文内容
+  - name: "posts"
+    label: "图文文章"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "posts/{{slug}}"
+    fields:
+      - {label: "标题", name: "title", widget: "string", required: true}
+      - {label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ssZ", required: true}
+      - {label: "草稿", name: "draft", widget: "boolean", default: false}
+      - {label: "封面图", name: "cover", widget: "image", required: false}
+      - {label: "标签", name: "tags", widget: "list", allow_add: true, required: false}
+      - {label: "分类", name: "categories", widget: "list", allow_add: true, required: false}
+      - {label: "摘要", name: "description", widget: "text", required: false}
+      - {label: "内容", name: "body", widget: "markdown", required: true}
+
+  # 直播预告
+  - name: "live"
+    label: "直播预告"
+    folder: "content/live"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "live/{{slug}}"
+    fields:
+      - {label: "直播标题", name: "title", widget: "string", required: true}
+      - {label: "直播时间", name: "livetime", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ssZ", required: true}
+      - {label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ssZ", required: true}
+      - {label: "直播平台", name: "platform", widget: "select", options: ["B站", "抖音", "视频号", "YouTube", "其他"], required: true}
+      - {label: "直播链接", name: "link", widget: "string", required: true}
+      - {label: "封面图", name: "cover", widget: "image", required: false}
+      - {label: "直播简介", name: "description", widget: "text", required: false}
+      - {label: "详细内容", name: "body", widget: "markdown", required: false}
+
+  # 关于页面（单页）
+  - name: "about"
+    label: "关于页面"
+    folder: "content/about"
+    create: false
+    slug: "_index"
+    fields:
+      - {label: "标题", name: "title", widget: "string", required: true}
+      - {label: "内容", name: "body", widget: "markdown", required: true}
+
+  # 首页设置（单页）
+  - name: "homepage"
+    label: "首页设置"
+    folder: "content"
+    create: false
+    slug: "_index"
+    fields:
+      - {label: "标题", name: "title", widget: "string", required: true}
+      - {label: "副标题", name: "subtitle", widget: "string", required: false}
+      - {label: "内容", name: "body", widget: "markdown", required: false}
