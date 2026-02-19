@@ -1,4 +1,4 @@
-baseURL = 'https://yourdomain.com'
+baseURL = 'https://my-blog-git-main-syzxs-projects.vercel.app'
 languageCode = 'zh-CN'
 title = '博主名字'
 theme = 'PaperMod'
