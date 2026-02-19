@@ -1,64 +1,49 @@
 baseURL = 'https://my-blog-git-main-syzxs-projects.vercel.app'
 languageCode = 'zh-CN'
-title = '博主名字'
+title = '实用哲学'
 theme = 'PaperMod'
 
 [params]
-  author = '博主名字'
-  description = '分享生活、旅行与创作的自媒体博主'
-  keywords = ['博客', '自媒体', 'Vlog', '旅行']
+  author = '实用哲学'
+  description = '儒释道经典智慧，哲学深度思考，传统文化传承'
+  keywords = ['国学', '传统文化', '儒释道', '哲学', '智慧', '经典']
   enableGoogleAnalytics = false
   
   # 首页设置
   [params.profileMode]
     enabled = true
-    title = '博主名字'
-    subtitle = '记录生活，分享美好'
+    title = '实用哲学'
+    subtitle = '传承千年智慧，启迪当代人生'
     imageUrl = '/images/avatar.jpg'
     imageWidth = 150
     imageHeight = 150
     
     [[params.profileMode.buttons]]
-      name = '图文'
+      name = '经典解读'
       url = '/posts/'
     [[params.profileMode.buttons]]
-      name = '摄影'
-      url = '/gallery/'
+      name = '儒释道'
+      url = '/wisdom/'
     [[params.profileMode.buttons]]
-      name = '图文'
-      url = '/posts/'
-    [[params.profileMode.buttons]]
-      name = '摄影'
-      url = '/gallery/'
-    [[params.profileMode.buttons]]
-      name = '视频'
-      url = '/videos/'
-    [[params.profileMode.buttons]]
-      name = '直播'
-      url = '/live/'
+      name = '哲学思考'
+      url = '/philosophy/'
     [[params.profileMode.buttons]]
       name = '关于'
       url = '/about/'
 
   # 社交链接
   [[params.socialIcons]]
-    name = 'bilibili'
-    url = 'https://space.bilibili.com/yourid'
+    name = 'weixin'
+    url = '#'
   [[params.socialIcons]]
-    name = 'tiktok'
-    url = 'https://www.douyin.com/user/yourid'
-  [[params.socialIcons]]
-    name = 'instagram'
-    url = 'https://www.instagram.com/yourid'
-  [[params.socialIcons]]
-    name = 'youtube'
-    url = 'https://www.youtube.com/@yourid'
+    name = 'zhihu'
+    url = '#'
   [[params.socialIcons]]
     name = 'weibo'
-    url = 'https://weibo.com/yourid'
+    url = '#'
   [[params.socialIcons]]
     name = 'email'
-    url = 'mailto:contact@yourdomain.com'
+    url = 'mailto:contact@example.com'
 
   # 评论系统 (Giscus)
   [params.giscus]
@@ -81,74 +66,36 @@ theme = 'PaperMod'
     distance = 1000
     threshold = 0.4
     minMatchCharLength = 0
-    keys = ['title', 'permalink', 'summary', 'content']
+    keys = ["title", "permalink", "summary", "content"]
 
 # 菜单
 [menu]
   [[menu.main]]
-    identifier = 'home'
-    name = '首页'
-    url = '/'
+    identifier = 'posts'
+    name = '经典解读'
+    url = '/posts/'
     weight = 10
   [[menu.main]]
-    identifier = 'posts'
-    name = '图文'
-    url = '/posts/'
+    identifier = 'wisdom'
+    name = '儒释道'
+    url = '/wisdom/'
     weight = 20
   [[menu.main]]
-    identifier = 'live'
-    name = '直播'
-    url = '/live/'
+    identifier = 'philosophy'
+    name = '哲学思考'
+    url = '/philosophy/'
     weight = 30
   [[menu.main]]
     identifier = 'about'
     name = '关于'
     url = '/about/'
     weight = 40
-  [[menu.main]]
-    identifier = 'search'
-    name = '🔍'
-    url = '/search/'
-    weight = 50
 
 # 输出格式
 [outputs]
-  home = ['HTML', 'RSS', 'JSON']
-  page = ['HTML']
-  section = ['HTML', 'RSS']
+  home = ["HTML", "RSS", "JSON"]
 
-# Markdown设置
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-  [markup.highlight]
-    style = 'github'
-    lineNos = true
-    codeFences = true
-    guessSyntax = true
-
-# 分页
-[pagination]
-  pagerSize = 10
-
-# 永久链接
-[permalinks]
-  posts = '/posts/:slug/'
-  live = '/live/:slug/'
-
-# 隐私配置
-[privacy]
-  [privacy.disqus]
-    disable = true
-  [privacy.googleAnalytics]
-    disable = true
-  [privacy.instagram]
-    disable = true
-  [privacy.twitter]
-    disable = true
-  [privacy.vimeo]
-    disable = true
-  [privacy.youtube]
-    disable = false
-    privacyEnhanced = true
+# 分类
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
