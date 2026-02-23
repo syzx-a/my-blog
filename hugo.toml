@@ -47,6 +47,15 @@ theme = 'PaperMod'
     [[params.profileMode.buttons]]
       name = '👤 关于'
       url = '/about/'
+    [[params.profileMode.buttons]]
+      name = '📋 简历'
+      url = '/resume/'
+    [[params.profileMode.buttons]]
+      name = '💼 作品集'
+      url = '/portfolio/'
+    [[params.profileMode.buttons]]
+      name = '🔗 友链'
+      url = '/friends/'
 
   [params.homeInfoParams]
     Title = '实用哲学'
@@ -113,6 +122,26 @@ theme = 'PaperMod'
     name = '👤 关于'
     url = '/about/'
     weight = 50
+  [[menu.main]]
+    identifier = 'resume'
+    name = '📋 简历'
+    url = '/resume/'
+    weight = 60
+  [[menu.main]]
+    identifier = 'timeline'
+    name = '📅 时间线'
+    url = '/timeline/'
+    weight = 70
+  [[menu.main]]
+    identifier = 'portfolio'
+    name = '💼 作品集'
+    url = '/portfolio/'
+    weight = 80
+  [[menu.main]]
+    identifier = 'friends'
+    name = '🔗 友链'
+    url = '/friends/'
+    weight = 90
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
