@@ -1,4 +1,4 @@
-baseURL = 'https://my-blog-git-main-syzxs-projects.vercel.app'
+baseURL = 'https://syzx.space'
 languageCode = 'zh-CN'
 title = '实用哲学'
 theme = 'PaperMod'
