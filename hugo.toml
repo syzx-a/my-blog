@@ -36,26 +36,17 @@ theme = 'PaperMod'
     imageHeight = 150
     
     [[params.profileMode.buttons]]
-      name = '📖 经典解读'
+      name = '经典解读'
       url = '/posts/'
     [[params.profileMode.buttons]]
-      name = '☯️ 儒释道'
+      name = '儒释道'
       url = '/wisdom/'
     [[params.profileMode.buttons]]
-      name = '🤔 哲学思考'
+      name = '哲学思考'
       url = '/philosophy/'
     [[params.profileMode.buttons]]
-      name = '👤 关于'
+      name = '关于'
       url = '/about/'
-    [[params.profileMode.buttons]]
-      name = '📋 简历'
-      url = '/resume/'
-    [[params.profileMode.buttons]]
-      name = '💼 作品集'
-      url = '/portfolio/'
-    [[params.profileMode.buttons]]
-      name = '🔗 友链'
-      url = '/friends/'
 
   [params.homeInfoParams]
     Title = '实用哲学'
@@ -99,49 +90,34 @@ theme = 'PaperMod'
 [menu]
   [[menu.main]]
     identifier = 'posts'
-    name = '📖 经典解读'
+    name = '经典解读'
     url = '/posts/'
     weight = 10
   [[menu.main]]
     identifier = 'wisdom'
-    name = '☯️ 儒释道'
+    name = '儒释道'
     url = '/wisdom/'
     weight = 20
   [[menu.main]]
     identifier = 'philosophy'
-    name = '🤔 哲学思考'
+    name = '哲学思考'
     url = '/philosophy/'
     weight = 30
   [[menu.main]]
-    identifier = 'search'
-    name = '🔍 搜索'
-    url = '/search/'
+    identifier = 'about'
+    name = '关于'
+    url = '/about/'
     weight = 40
   [[menu.main]]
-    identifier = 'about'
-    name = '👤 关于'
-    url = '/about/'
+    identifier = 'portfolio'
+    name = '作品集'
+    url = '/portfolio/'
     weight = 50
   [[menu.main]]
-    identifier = 'resume'
-    name = '📋 简历'
-    url = '/resume/'
-    weight = 60
-  [[menu.main]]
-    identifier = 'timeline'
-    name = '📅 时间线'
-    url = '/timeline/'
-    weight = 70
-  [[menu.main]]
-    identifier = 'portfolio'
-    name = '💼 作品集'
-    url = '/portfolio/'
-    weight = 80
-  [[menu.main]]
     identifier = 'friends'
-    name = '🔗 友链'
+    name = '友情链接'
     url = '/friends/'
-    weight = 90
+    weight = 60
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
