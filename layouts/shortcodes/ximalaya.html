@@ -1,0 +1,30 @@
+{{/* 喜马拉雅音频嵌入
+  使用方法：
+  {{< ximalaya 12345678 >}}
+  {{< ximalaya id=12345678 >}}
+  {{< ximalaya id=12345678 album=678901 >}}
+  {{< ximalaya 12345678 678901 >}}
+  
+  参数说明：
+  - 第一个参数或 id: 音频ID（必须）
+  - 第二个参数或 album: 专辑ID（可选，用于显示专辑信息）
+*/}}
+
+{{ $id := .Get 0 | default (.Get "id") }}
+{{ $album := .Get 1 | default (.Get "album") }}
+
+{{ if $id }}
+<div class="audio-wrapper ximalaya-wrapper">
+  <iframe 
+    src="https://www.ximalaya.com/thirdparty/player/sound/{{ $id }}{{ if $album }}/albumId/{{ $album }}{{ end }}"
+    frameborder="0"
+    width="100%"
+    height="200"
+    allowtransparency="true"
+    loading="lazy"
+    title="喜马拉雅音频播放器"
+  ></iframe>
+</div>
+{{ else }}
+<!-- 错误：未提供音频ID -->
+{{ end }}

@@ -99,10 +99,20 @@ theme = 'PaperMod'
     url = '/wisdom/'
     weight = 20
   [[menu.main]]
+    identifier = 'videos'
+    name = '视频'
+    url = '/videos/'
+    weight = 25
+  [[menu.main]]
     identifier = 'philosophy'
     name = '哲学思考'
     url = '/philosophy/'
     weight = 30
+  [[menu.main]]
+    identifier = 'audio'
+    name = '音频专栏'
+    url = '/audio/'
+    weight = 35
   [[menu.main]]
     identifier = 'about'
     name = '关于'
