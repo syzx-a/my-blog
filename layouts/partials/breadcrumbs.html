@@ -1,23 +1,12 @@
-{{/* 面包屑导航 */}}
-
-{{ if .Parent }}
+{{ if and .Parent (ne .Parent.Type "home") }}
 <nav class="breadcrumbs" aria-label="breadcrumb">
   <ol class="breadcrumb-list">
+    {{- $ancestors := .Ancestors -}}
+    {{- range $ancestors -}}
     <li class="breadcrumb-item">
-      <a href="{{ .Site.Home.RelPermalink }}">首页</a>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
     </li>
-    
-    {{ if .Parent.Parent }}
-    <li class="breadcrumb-item">
-      <a href="{{ .Parent.Parent.RelPermalink }}">{{ .Parent.Parent.Title }}</a>
-    </li>
-    {{ end }}
-    
-    {{ if .Parent }}
-    <li class="breadcrumb-item">
-      <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
-    </li>
-    {{ end }}
+    {{- end -}}
     
     <li class="breadcrumb-item active" aria-current="page">
       {{ .Title }}

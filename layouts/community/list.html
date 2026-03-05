@@ -1,0 +1,354 @@
+{{ define "main" }}
+
+<div class="community-page">
+  <header class="page-header">
+    <div class="header-decoration">
+      <span class="icon">🌟</span>
+    </div>
+    <h1>{{ .Title }}</h1>
+    <div class="page-description">{{ .Description }}</div>
+  </header>
+
+  <div class="community-content">
+    <section class="hero-section">
+      <div class="hero-icon">🏠</div>
+      <h2>志同道合的智慧共同体</h2>
+      <p>在这里，我们汇聚了一批对儒释道智慧、哲学思考感兴趣的朋友。无论你是传统文化的爱好者，还是正在寻找人生方向的探索者，这里都有你的同路人。</p>
+    </section>
+
+    <section class="values-section">
+      <h2><span class="section-icon">✨</span> 社群价值</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">📚</div>
+          <h3>经典共读</h3>
+          <p>定期组织论语、道德经、心经等经典著作的共读活动，一起探索古人智慧</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">💬</div>
+          <h3>思想交流</h3>
+          <p>与志同道合的朋友探讨人生智慧，分享心得体会，互相启发</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🎯</div>
+          <h3>成长陪伴</h3>
+          <p>互相鼓励、共同进步的人生旅程伙伴，一起遇见更好的自己</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="join-section">
+      <h2><span class="section-icon">🤝</span> 加入我们</h2>
+      <div class="join-methods">
+        <div class="join-card">
+          <div class="join-icon">💬</div>
+          <h3>微信群</h3>
+          <p>扫描下方二维码添加助手微信，备注"加入社群"，助手会邀请你入群</p>
+          <div class="qr-placeholder">
+            <div class="qr-box">📱 微信二维码</div>
+          </div>
+        </div>
+        <div class="join-card">
+          <div class="join-icon">📱</div>
+          <h3>公众号</h3>
+          <p>关注公众号「实用哲学」，回复"社群"获取入群链接</p>
+          <div class="qr-placeholder">
+            <div class="qr-box">📱 公众号二维码</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rules-section">
+      <h2><span class="section-icon">📋</span> 群规</h2>
+      <div class="rules-list">
+        <div class="rule-item">
+          <span class="rule-number">1</span>
+          <span>尊重他人，友善交流</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-number">2</span>
+          <span>分享有价值的内容，拒绝广告</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-number">3</span>
+          <span>保持专注主题讨论</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-number">4</span>
+          <span>鼓励互助，共同成长</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-section">
+      <blockquote>
+        <p>有朋自远方来，不亦乐乎</p>
+        <cite>—— 孔子</cite>
+      </blockquote>
+    </section>
+
+    <section class="cta-section">
+      <p class="cta-text">期待与你相遇，共同探索人生的智慧与意义</p>
+      <a href="#" class="cta-button" onclick="alert('请添加微信助手入群'); return false;">
+        立即加入社群
+      </a>
+    </section>
+  </div>
+</div>
+
+<style>
+.community-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-decoration {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.page-description {
+  color: var(--muted-color);
+  font-size: 1.1rem;
+}
+
+.community-content section {
+  margin-bottom: 3rem;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea11 0%, #764ba211 100%);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.hero-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.hero-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--title-color);
+}
+
+.hero-section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--muted-color);
+}
+
+.values-section h2,
+.join-section h2,
+.rules-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  font-size: 1.5rem;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.value-card {
+  padding: 1.5rem;
+  background: var(--entry-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.value-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.value-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--title-color);
+}
+
+.value-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted-color);
+}
+
+.join-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.join-card {
+  padding: 2rem;
+  background: var(--entry-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.join-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.join-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--title-color);
+}
+
+.join-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted-color);
+  margin-bottom: 1.5rem;
+}
+
+.qr-placeholder {
+  display: flex;
+  justify-content: center;
+}
+
+.qr-box {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--code-bg);
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  color: var(--muted-color);
+  font-size: 0.9rem;
+}
+
+.rules-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--entry-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.rule-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.quote-section {
+  text-align: center;
+  padding: 2rem;
+  background: var(--entry-bg);
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.quote-section blockquote {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--title-color);
+}
+
+.quote-section cite {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: var(--muted-color);
+  font-style: normal;
+}
+
+.cta-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.cta-text {
+  font-size: 1.2rem;
+  color: var(--muted-color);
+  margin-bottom: 1.5rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .values-grid,
+  .join-methods {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+{{ end }}

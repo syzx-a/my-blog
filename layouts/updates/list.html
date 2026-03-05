@@ -1,0 +1,257 @@
+{{ define "main" }}
+
+<div class="updates-page">
+  <header class="page-header">
+    <div class="header-decoration">
+      <span class="icon">🔄</span>
+    </div>
+    <h1>{{ .Title }}</h1>
+    <div class="page-description">追踪网站最新内容更新</div>
+  </header>
+
+  <div class="updates-list">
+    {{ $pages := where .Site.RegularPages "Type" "not in" (slice "updates" "search" "sitemap") }}
+    {{ $sortedPages := sort $pages "Lastmod" "desc" }}
+    
+    {{ range $sortedPages }}
+    <article class="update-item">
+      <div class="update-date">
+        <span class="date">{{ .Lastmod.Format "2006-01-02" }}</span>
+      </div>
+      <div class="update-content">
+        <div class="update-section">
+          {{- $section := .Section -}}
+          {{- if eq $section "posts" -}}
+            <span class="section-badge posts">📜 经典解读</span>
+          {{- else if eq $section "wisdom" -}}
+            <span class="section-badge wisdom">🧘 儒释道</span>
+          {{- else if eq $section "philosophy" -}}
+            <span class="section-badge philosophy">💡 哲学思考</span>
+          {{- else if eq $section "videos" -}}
+            <span class="section-badge videos">🎬 视频</span>
+          {{- else if eq $section "audio" -}}
+            <span class="section-badge audio">🎵 音频</span>
+          {{- else if eq $section "about" -}}
+            <span class="section-badge about">👤 关于</span>
+          {{- else if eq $section "portfolio" -}}
+            <span class="section-badge portfolio">🎨 作品集</span>
+          {{- else if eq $section "friends" -}}
+            <span class="section-badge friends">🤝 友链</span>
+          {{- else if eq $section "resume" -}}
+            <span class="section-badge resume">📋 简历</span>
+          {{- else if eq $section "timeline" -}}
+            <span class="section-badge timeline">📅 时间线</span>
+          {{- else -}}
+            <span class="section-badge">{{ $section }}</span>
+          {{- end -}}
+        </div>
+        <h2 class="update-title">
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h2>
+        {{ if .Description }}
+        <p class="update-description">{{ .Description }}</p>
+        {{ end }}
+        <div class="update-meta">
+          {{ if .Params.categories }}
+          <span class="meta-categories">
+            {{ range first 1 .Params.categories }}
+            {{ . }}
+            {{ end }}
+          </span>
+          {{ end }}
+          {{ if .Params.tags }}
+          <span class="meta-tags">
+            {{ range first 3 .Params.tags }}
+            <span class="tag">{{ . }}</span>
+            {{ end }}
+          </span>
+          {{ end }}
+        </div>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</div>
+
+<style>
+.updates-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-decoration {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.page-description {
+  color: var(--muted-color);
+  font-size: 1.1rem;
+}
+
+.updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.update-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--entry-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.update-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.update-date {
+  flex-shrink: 0;
+  width: 90px;
+  text-align: center;
+}
+
+.update-date .date {
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.update-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.update-section {
+  margin-bottom: 0.5rem;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.section-badge.posts {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.section-badge.wisdom {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.section-badge.philosophy {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.section-badge.videos {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.section-badge.audio {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.section-badge.about,
+.section-badge.portfolio,
+.section-badge.friends,
+.section-badge.resume,
+.section-badge.timeline {
+  background: #eceff1;
+  color: #546e7a;
+}
+
+.update-title {
+  font-size: 1.25rem;
+  margin: 0.3rem 0;
+  font-weight: 600;
+}
+
+.update-title a {
+  color: var(--title-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.update-title a:hover {
+  color: var(--primary-color);
+}
+
+.update-description {
+  color: var(--muted-color);
+  font-size: 0.95rem;
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.update-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+}
+
+.meta-tags {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.tag {
+  padding: 0.15rem 0.5rem;
+  background: var(--code-bg);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .update-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .update-date {
+    width: auto;
+    text-align: left;
+  }
+  
+  .update-date .date {
+    display: inline;
+    padding: 0;
+    background: none;
+    color: var(--primary-color);
+  }
+}
+</style>
+{{ end }}
