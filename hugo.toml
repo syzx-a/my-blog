@@ -31,52 +31,38 @@ theme = 'PaperMod'
     enabled = true
     title = '实用哲学'
     subtitle = '传承千年智慧，启迪当代人生'
-    imageUrl = '/images/avatar.jpg'
-    imageWidth = 150
-    imageHeight = 150
+    imageUrl = '/images/logo.svg'
+    imageWidth = 120
+    imageHeight = 120
     
     [[params.profileMode.buttons]]
-      name = '经典解读'
+      name = '📖 经典解读'
       url = '/posts/'
     [[params.profileMode.buttons]]
-      name = '儒释道'
+      name = '☯️ 儒释道'
       url = '/wisdom/'
     [[params.profileMode.buttons]]
-      name = '哲学思考'
+      name = '💭 哲学思考'
       url = '/philosophy/'
     [[params.profileMode.buttons]]
-      name = '关于'
+      name = '🎬 视频作品'
+      url = '/videos/'
+    [[params.profileMode.buttons]]
+      name = '👤 关于我'
       url = '/about/'
 
-  [params.homeInfoParams]
-    Title = '实用哲学'
-    Content = '''
-### 传承千年智慧，启迪当代人生
-
-📚 **经典解读** - 深入浅出解读儒释道经典  
-🧘 **修身养性** - 古代智慧的现代应用  
-💡 **哲学思考** - 探索人生的意义与价值
-
-> "知之为知之，不知为不知，是知也" —— 孔子
-'''
-
   [[params.socialIcons]]
-    name = 'weixin'
-    url = '#'
+    name = 'wechat'
+    url = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzk0NjQwNTU5Ng=='
   [[params.socialIcons]]
-    name = 'zhihu'
-    url = '#'
+    name = 'douyin'
+    url = 'https://www.douyin.com/user/MS4wLjABAAAA'
   [[params.socialIcons]]
-    name = 'weibo'
-    url = '#'
+    name = 'bilibili'
+    url = 'https://space.bilibili.com/'
   [[params.socialIcons]]
     name = 'email'
-    url = 'mailto:contact@example.com'
-
-  [params.editPost]
-    URL = 'https://github.com/syzx-a/my-blog/tree/main/content'
-    Text = '建议修改'
-    appendFilePath = true
+    url = 'mailto:601522876@qq.com'
 
   [params.fuseOpts]
     isCaseSensitive = false
@@ -87,6 +73,7 @@ theme = 'PaperMod'
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
+# 精简导航菜单
 [menu]
   [[menu.main]]
     identifier = 'posts'
@@ -99,44 +86,20 @@ theme = 'PaperMod'
     url = '/wisdom/'
     weight = 20
   [[menu.main]]
-    identifier = 'videos'
-    name = '视频'
-    url = '/videos/'
-    weight = 25
-  [[menu.main]]
     identifier = 'philosophy'
     name = '哲学思考'
     url = '/philosophy/'
     weight = 30
   [[menu.main]]
-    identifier = 'audio'
-    name = '音频专栏'
-    url = '/audio/'
-    weight = 35
+    identifier = 'videos'
+    name = '视频'
+    url = '/videos/'
+    weight = 40
   [[menu.main]]
     identifier = 'about'
     name = '关于'
     url = '/about/'
-  [[menu.main]]
-    identifier = 'updates'
-    name = '更新'
-    url = '/updates/'
-    weight = 40
-  [[menu.main]]
-    identifier = 'community'
-    name = '社群'
-    url = '/community/'
-    weight = 45
-  [[menu.main]]
-    identifier = 'portfolio'
-    name = '作品集'
-    url = '/portfolio/'
     weight = 50
-  [[menu.main]]
-    identifier = 'friends'
-    name = '友情链接'
-    url = '/friends/'
-    weight = 60
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
