@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C53D43"/>
+      <stop offset="100%" style="stop-color:#A52F34"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  
+  <!-- 装饰圆 -->
+  <circle cx="100" cy="100" r="200" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="1100" cy="530" r="150" fill="rgba(255,255,255,0.05)"/>
+  
+  <!-- Logo 区域 -->
+  <g transform="translate(100, 200)">
+    <!-- 太极图简化 -->
+    <circle cx="60" cy="60" r="55" fill="none" stroke="#FDFBF7" stroke-width="4"/>
+    <path d="M 60,5 A 55,55 0 0,1 60,115 A 27.5,27.5 0 0,1 60,60 A 27.5,27.5 0 0,0 60,5" fill="#FDFBF7"/>
+    <path d="M 60,115 A 55,55 0 0,1 60,5 A 27.5,27.5 0 0,1 60,60 A 27.5,27.5 0 0,0 60,115" fill="#2D2D2D"/>
+    <circle cx="60" cy="32.5" r="10" fill="#2D2D2D"/>
+    <circle cx="60" cy="87.5" r="10" fill="#FDFBF7"/>
+  </g>
+  
+  <!-- 标题 -->
+  <text x="250" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#FDFBF7">
+    实用哲学
+  </text>
+  
+  <!-- 副标题 -->
+  <text x="250" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="rgba(253,251,247,0.9)">
+    传承千年智慧，启迪当代人生
+  </text>
+  
+  <!-- 网址 -->
+  <text x="250" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="rgba(253,251,247,0.7)">
+    syzx.space
+  </text>
+  
+  <!-- 标签 -->
+  <g transform="translate(250, 460)">
+    <rect x="0" y="0" width="80" height="32" rx="16" fill="rgba(253,251,247,0.2)"/>
+    <text x="40" y="22" font-family="system-ui, sans-serif" font-size="14" fill="#FDFBF7" text-anchor="middle">儒家</text>
+    
+    <rect x="100" y="0" width="80" height="32" rx="16" fill="rgba(253,251,247,0.2)"/>
+    <text x="140" y="22" font-family="system-ui, sans-serif" font-size="14" fill="#FDFBF7" text-anchor="middle">道家</text>
+    
+    <rect x="200" y="0" width="80" height="32" rx="16" fill="rgba(253,251,247,0.2)"/>
+    <text x="240" y="22" font-family="system-ui, sans-serif" font-size="14" fill="#FDFBF7" text-anchor="middle">佛家</text>
+  </g>
+</svg>

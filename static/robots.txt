@@ -1,0 +1,18 @@
+# robots.txt for syzx.space
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://syzx.space/sitemap.xml
+
+# 禁止爬取的管理路径
+Disallow: /admin/
+Disallow: /api/
+
+# 允许所有内容被索引
+Allow: /posts/
+Allow: /wisdom/
+Allow: /philosophy/
+Allow: /videos/
+Allow: /about/

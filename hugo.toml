@@ -1,12 +1,28 @@
 baseURL = 'https://syzx.space'
 languageCode = 'zh-CN'
-title = '实用哲学'
+title = '实用哲学 - 传承千年智慧，启迪当代人生'
 theme = 'PaperMod'
+
+# 网站基础信息
+copyright = '© 2026 实用哲学'
+
+# 语言配置
+defaultContentLanguage = 'zh'
+defaultContentLanguageInSubdir = false
+hasCJKLanguage = true
+summaryLength = 120
+paginate = 10
+
+# SEO 相关
+enableRobotsTXT = true
+enableEmoji = true
+enableGitInfo = true
+rssLimit = 50
 
 [params]
   author = '实用哲学'
-  description = '儒释道经典智慧，哲学深度思考，传统文化传承'
-  keywords = ['国学', '传统文化', '儒释道', '哲学', '智慧', '经典']
+  description = '深入解读儒释道经典，分享哲学思考，传承千年智慧，启迪当代人生。探索《论语》《道德经》《金刚经》等经典的现代应用。'
+  keywords = ['国学', '传统文化', '儒释道', '哲学', '智慧', '经典', '论语', '道德经', '金刚经', '修身养性']
   defaultTheme = 'auto'
   ShowReadingTime = true
   ShowShareButtons = true
@@ -20,6 +36,10 @@ theme = 'PaperMod'
   hideSummary = false
   showtoc = true
   tocopen = false
+  
+  # SEO 增强
+  env = 'production'
+  DateFormat = '2006-01-02'
   
   [params.assets]
     favicon = '/favicon.ico'
@@ -101,14 +121,36 @@ theme = 'PaperMod'
     url = '/about/'
     weight = 50
 
+# 输出格式
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
 
+# 分类法
 [taxonomies]
   category = 'categories'
   tag = 'tags'
   series = 'series'
 
+# Sitemap 配置
+[sitemap]
+  changefreq = 'weekly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
+# 时间格式
+[frontmatter]
+  date = [':filename', ':default']
+  lastmod = [':git', 'lastmod', ':fileModTime', ':default']
+
+# 内容类型
+[mediaTypes]
+  [mediaTypes."application/ld+json"]
+    suffixes = ["json"]
+
+# Markdown 配置
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
@@ -132,3 +174,13 @@ theme = 'PaperMod'
   endLevel = 3
   ordered = false
   startLevel = 2
+
+# Minify 配置
+[minify]
+  disableCSS = false
+  disableHTML = false
+  disableJS = false
+  disableJSON = false
+  disableSVG = false
+  disableXML = false
+  minifyOutput = true
