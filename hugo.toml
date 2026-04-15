@@ -11,7 +11,8 @@ defaultContentLanguage = 'zh'
 defaultContentLanguageInSubdir = false
 hasCJKLanguage = true
 summaryLength = 120
-paginate = 10
+[pagination]
+  pagerSize = 10
 
 # SEO 相关
 enableRobotsTXT = true
