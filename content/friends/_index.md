@@ -9,7 +9,7 @@ description: "友链 - 实用哲学"
 
 ### 交换友链
 
-如果你想交换友链，欢迎通过邮箱联系我：contact@example.com
+如果你想交换友链，欢迎通过邮箱联系我：jackliang168@foxmail.com
 
 **交换条件：**
 - 内容优质原创

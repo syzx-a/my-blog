@@ -619,6 +619,69 @@ body {
 }
 
 /* ============================================
+   列表页（经典解读等）标签导航栏
+   ============================================ */
+
+.posts-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.posts-page-header h1 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.page-description {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.tag-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.tag-nav-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.tag-nav-link {
+  display: inline-block;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.tag-nav-link:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0 1.5rem;
+}
+
+.page-info {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
    视觉优化：首页文章卡片增强
    ============================================ */
 

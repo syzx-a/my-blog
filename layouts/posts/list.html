@@ -1,99 +1,55 @@
-{{/* 文章列表页的布局 */}}
-
 {{ define "main" }}
 
 <div class="posts-list-page">
-  <header class="page-header">
-    <div class="header-decoration">
-      <span class="icon">📜</span>
-    </div>
-    <h1>{{ .Title }}</h1>
-    {{ if .Content }}
-    <div class="page-description">{{ .Content }}</div>
-    {{ else }}
-    <div class="page-description">深入解读儒释道经典，启迪现代人生智慧</div>
+  <header class="page-header posts-page-header">
+    <h1>📜 {{ .Title }}</h1>
+    {{ if .Description }}
+    <p class="page-description">{{ .Description }}</p>
     {{ end }}
     
-    <div class="classic-categories">
-      <a href="/tags/%E8%AE%BA%E8%AF%9D/" class="category-tag ruyu">
-        <span class="tag-icon">🎯</span>
-        <span>论语</span>
-      </a>
-      <a href="/tags/%E9%81%93%E5%AE%B6/" class="category-tag daojia">
-        <span class="tag-icon">☯️</span>
-        <span>道家</span>
-      </a>
-      <a href="/tags/%E4%BD%9B%E5%AE%B6/" class="category-tag fojia">
-        <span class="tag-icon">🪷</span>
-        <span>佛家</span>
-      </a>
-      <a href="/tags/%E5%93%B2%E5%AE%B6/" class="category-tag rujia">
-        <span class="tag-icon">📚</span>
-        <span>儒家</span>
-      </a>
-    </div>
+    {{- /* 快速标签导航 */}}
+    <nav class="tag-nav">
+      <span class="tag-nav-label">探索标签：</span>
+      <a class="tag-nav-link" href="/tags/儒家/">儒家</a>
+      <a class="tag-nav-link" href="/tags/道家/">道家</a>
+      <a class="tag-nav-link" href="/tags/佛家/">佛家</a>
+      <a class="tag-nav-link" href="/tags/论语/">论语</a>
+      <a class="tag-nav-link" href="/tags/阴符经/">阴符经</a>
+      <a class="tag-nav-link" href="/tags/内观/">内观</a>
+    </nav>
+    <hr class="section-divider">
   </header>
 
-  <div class="posts-grid">
-    {{ range .Paginator.Pages }}
-    <article class="post-card">
-      {{ if .Params.cover }}
-      <a href="{{ .Permalink }}" class="post-card-cover">
-        {{ if .Params.cover.image }}
-        <img src="{{ .Params.cover.image }}" alt="{{ .Params.cover.alt | default .Title }}" loading="lazy">
-        {{ else }}
-        <img src="{{ .Params.cover }}" alt="{{ .Title }}" loading="lazy">
-        {{ end }}
-        <div class="cover-overlay"></div>
-      </a>
-      {{ end }}
-      
-      <div class="post-card-content">
-        <div class="post-card-header">
-          {{ if .Params.categories }}
-          <span class="post-category">{{ index .Params.categories 0 }}</span>
-          {{ end }}
-        </div>
-        
-        <h2 class="post-card-title">
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
-        </h2>
-        
-        {{ if .Params.description }}
-        <p class="post-card-description">{{ .Params.description }}</p>
-        {{ else }}
-        <p class="post-card-summary">{{ .Summary | plainify | truncate 100 }}</p>
-        {{ end }}
-        
-        <div class="post-card-footer">
-          <div class="post-card-meta">
-            <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-              <span class="meta-icon">📅</span>
-              {{ .Date.Format "2006年1月2日" }}
-            </time>
-          </div>
-          
-          {{ if .Params.tags }}
-          <div class="post-card-tags">
-            {{ range first 2 .Params.tags }}
-            <span class="tag">#{{ . }}</span>
-            {{ end }}
-          </div>
-          {{ end }}
-        </div>
-      </div>
-    </article>
-    {{ end }}
-  </div>
+  {{- /* 文章列表 — 复用首页卡片风格 */}}
+  {{ range .Paginator.Pages }}
+  <article class="post-entry">
+    {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">
+        <a href="{{ .Permalink }}">{{- .Title }}</a>
+      </h2>
+    </header>
+    <div class="entry-content">
+      <p>{{ .Summary | plainify | truncate 200 }}</p>
+    </div>
+    <footer class="entry-footer">
+      {{- with .Params.categories }}
+      <span class="entry-categories">
+        {{- range . }}<a class="category" href="{{ "categories/" | relURL }}{{ . | urlize }}">{{ . }}</a>{{ end }}
+      </span>
+      {{- end }}
+      <span class="entry-date">📅 {{ .Date.Format "2006-01-02" }}</span>
+    </footer>
+  </article>
+  {{ end }}
 
   {{ if gt .Paginator.TotalPages 1 }}
   <nav class="pagination">
     {{ if .Paginator.HasPrev }}
     <a href="{{ .Paginator.Prev.URL }}" class="prev">← 上一页</a>
     {{ end }}
-    
     <span class="page-info">第 {{ .Paginator.PageNumber }} 页，共 {{ .Paginator.TotalPages }} 页</span>
-    
     {{ if .Paginator.HasNext }}
     <a href="{{ .Paginator.Next.URL }}" class="next">下一页 →</a>
     {{ end }}
