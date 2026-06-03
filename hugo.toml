@@ -1,6 +1,6 @@
 baseURL = 'https://syzx.space'
 languageCode = 'zh-CN'
-title = '实用哲学 - 传承千年智慧，启迪当代人生'
+title = '实用哲学'
 theme = 'PaperMod'
 
 # 网站基础信息
@@ -118,10 +118,20 @@ rssLimit = 50
     url = '/videos/'
     weight = 40
   [[menu.main]]
+    identifier = 'audio'
+    name = '音频'
+    url = '/audio/'
+    weight = 45
+  [[menu.main]]
     identifier = 'about'
     name = '关于'
     url = '/about/'
     weight = 50
+  [[menu.main]]
+    identifier = 'search'
+    name = '🔍'
+    url = '/search/'
+    weight = 100
 
 # 输出格式
 [outputs]

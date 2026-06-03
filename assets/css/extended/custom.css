@@ -529,6 +529,115 @@ th {
 }
 
 /* ============================================
+   视觉优化：排版 & 可读性
+   ============================================ */
+
+/* 全局中文字体优化 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+
+/* 文章内容排版 */
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--text-primary);
+}
+
+.post-content p {
+  margin-bottom: 1.25rem;
+}
+
+.post-content h2 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-light);
+  color: var(--primary);
+}
+
+.post-content h3 {
+  font-size: 1.2rem;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--secondary);
+}
+
+/* 文章标题 */
+.post-title {
+  font-size: 1.8rem;
+  line-height: 1.4;
+}
+
+/* 描述区 */
+.post-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  padding: 0.75rem 1.25rem;
+  margin: 1rem 0;
+  border-left: 4px solid var(--primary);
+  background: var(--primary-light);
+  border-radius: 0 8px 8px 0;
+}
+
+/* 元数据区 */
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.post-tags a {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-right: 4px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.post-tags a:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* 图片优化 */
+.post-content img {
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 面包屑 */
+.breadcrumbs {
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ============================================
+   视觉优化：首页文章卡片增强
+   ============================================ */
+
+.entry-content p {
+  line-height: 1.75;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+}
+
+.entry-header h2 {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.entry-header h2 a:hover {
+  color: var(--primary);
+}
+
+/* ============================================
    动画效果
    ============================================ */
 
