@@ -50,6 +50,38 @@
     </ul>
     {{ end }}
 
+    {{- /* 系列文章导航 */}}
+    {{- with .Params.series }}
+      {{- $seriesName := index . 0 }}
+      {{- $sameSeries := where $.Site.RegularPages "Params.series" "intersect" . }}
+      {{- if gt (len $sameSeries) 1 }}
+    <section class="post-series">
+      <h3>📖 本系列文章</h3>
+      <ol class="series-list">
+        {{- range $sameSeries }}
+        <li{{ if eq .RelPermalink $.RelPermalink }} class="current"{{ end }}>
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+          {{- if eq .RelPermalink $.RelPermalink }}<span class="series-current-marker">👈 当前</span>{{ end }}
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+      {{- end }}
+    {{- end }}
+
+    {{- /* 相关文章推荐（同分类或同标签）*/}}
+    {{- $related := first 3 (where (where $.Site.RegularPages "Permalink" "!=" $.Permalink) "Params.categories" "intersect" $.Params.categories) }}
+    {{- if and $related (gt (len $related) 0) }}
+    <section class="post-related">
+      <h3>🔗 相关推荐</h3>
+      <ul class="related-list">
+        {{- range $related }}
+        <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+        {{- end }}
+      </ul>
+    </section>
+    {{- end }}
+
     {{ if or .NextInSection .PrevInSection }}
     <nav class="paginav">
       {{ with .NextInSection }}
