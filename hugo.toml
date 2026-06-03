@@ -45,7 +45,7 @@ rssLimit = 50
   # 统计分析配置（PaperMod 内置格式）
   [params.analytics]
     # Google Analytics（GA4）— 填入测量ID如 G-XXXXXXXXXX
-    google = { id = '' }
+    google = { id = 'G-JWTVPZT1XR' }
     # 百度统计 ID
     baidu = '3e73d41885f6d93dcfc2aa6eb4c77050'
   
