@@ -1,0 +1,64 @@
+{{- define "main" }}
+{{- /* 首页欢迎区 */}}
+<header class="page-header home-header">
+  <div class="home-info">
+    {{- with .Site.Params.homeInfoParams }}
+    <h1 class="home-title">{{ .Title | markdownify }}</h1>
+    <p class="home-content">{{ .Content | markdownify }}</p>
+    {{- end }}
+  </div>
+  {{- /* 分类快速导航 */}}
+  <nav class="home-categories">
+    <span class="home-categories-label">探索文章：</span>
+    <a class="home-cat-link" href="/posts/经典解读/">📜 经典解读</a>
+    <a class="home-cat-link" href="/posts/道家十日内观/">🧘 十日内观</a>
+    <a class="home-cat-link" href="/wisdom/">☯️ 儒释道</a>
+    <a class="home-cat-link" href="/philosophy/">💭 哲学思考</a>
+    <a class="home-cat-link" href="/videos/">🎬 视频</a>
+    <a class="home-cat-link" href="/audio/">🎙️ 音频</a>
+  </nav>
+  <hr class="home-divider">
+  <h2 class="home-section-title">📝 最新文章</h2>
+</header>
+
+{{- /* 只显示有日期的文章（排除 section 索引页），按日期降序 */}}
+{{- $pages := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "ne" true }}
+{{- $paginator := .Paginate $pages }}
+{{- range $index, $page := $paginator.Pages }}
+<article class="post-entry">
+  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+      <a href="{{ .Permalink }}">{{- .Title }} {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[草稿]</span></sup>{{- end }}</a>
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>{{ .Summary | plainify | truncate 200 }}</p>
+  </div>
+  <footer class="entry-footer">
+    {{- with .Params.categories }}
+    <span class="entry-categories">
+      {{- range . }}<a class="category" href="{{ "categories/" | relURL }}{{ . | urlize }}">{{ . }}</a>{{ end }}
+    </span>
+    {{- end }}
+    <span class="entry-date">📅 {{ .Date.Format "2006-01-02" }}</span>
+  </footer>
+</article>
+{{- end }}
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL }}">← 上一页</a>
+    {{- end }}
+    <span>第 {{ $paginator.PageNumber }} 页 / 共 {{ $paginator.TotalPages }} 页</span>
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL }}">下一页 →</a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+{{- end }}

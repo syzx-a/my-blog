@@ -56,28 +56,22 @@ rssLimit = 50
     apple_touch_icon = '/apple-touch-icon.png'
     
   [params.profileMode]
-    enabled = true
+    enabled = false
     title = '实用哲学'
     subtitle = '传承千年智慧，启迪当代人生'
     imageUrl = '/images/logo.svg'
     imageWidth = 120
     imageHeight = 120
-    
-    [[params.profileMode.buttons]]
-      name = '📖 经典解读'
-      url = '/posts/'
-    [[params.profileMode.buttons]]
-      name = '☯️ 儒释道'
-      url = '/wisdom/'
-    [[params.profileMode.buttons]]
-      name = '💭 哲学思考'
-      url = '/philosophy/'
-    [[params.profileMode.buttons]]
-      name = '🎬 视频作品'
-      url = '/videos/'
-    [[params.profileMode.buttons]]
-      name = '👤 关于我'
-      url = '/about/'
+  
+  # 首页介绍区（文章列表上方）
+  [params.homeInfoParams]
+    Title = '传承千年智慧，启迪当代人生 ☯️'
+    Content = '深入解读儒释道经典，分享哲学思考。在这里，传统不是博物馆里的文物，而是可以指导当下生活的智慧。'
+  
+  # 首页显示设置
+  ShowFullTextinRSS = false
+  disableSpecial1stPost = false
+  disableScrollToTop = false
 
   [[params.socialIcons]]
     name = 'wechat'
