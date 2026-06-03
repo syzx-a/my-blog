@@ -85,3 +85,21 @@
 }
 </script>
 {{- end }}
+
+{{- /* ============ 统计分析脚本 ============ */ -}}
+
+{{- /* 百度统计 */ -}}
+{{- with .Site.Params.analytics.baidu }}
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?" + "{{ . }}";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+{{- end }}
+
+{{- /* Google Analytics (GA4) — PaperMod 主题已内置支持，通过 params.analytics.google.id 配置 */ -}}
+{{- /* 无需在此重复添加，避免脚本重复加载 */ -}}

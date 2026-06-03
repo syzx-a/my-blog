@@ -37,10 +37,17 @@ rssLimit = 50
   hideSummary = false
   showtoc = true
   tocopen = false
-  
+
   # SEO 增强
   env = 'production'
   DateFormat = '2006-01-02'
+
+  # 统计分析配置（PaperMod 内置格式）
+  [params.analytics]
+    # Google Analytics（GA4）— 填入测量ID如 G-XXXXXXXXXX
+    google = { id = '' }
+    # 百度统计 ID
+    baidu = '3e73d41885f6d93dcfc2aa6eb4c77050'
   
   [params.assets]
     favicon = '/favicon.ico'
