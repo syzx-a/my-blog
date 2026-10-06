@@ -95,7 +95,7 @@ rssLimit = 50
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
-# 精简导航菜单
+# 导航菜单：主导航6 项，其余收进「更多」
 [menu]
   [[menu.main]]
     identifier = 'posts'
@@ -103,30 +103,78 @@ rssLimit = 50
     url = '/posts/'
     weight = 10
   [[menu.main]]
+    identifier = 'columns'
+    name = '专栏'
+    url = '/columns/'
+    weight = 20
+  [[menu.main]]
+    identifier = 'courses'
+    name = '课程'
+    url = '/courses/'
+    weight = 30
+  [[menu.main]]
     identifier = 'wisdom'
     name = '儒释道'
     url = '/wisdom/'
-    weight = 20
+    weight = 40
   [[menu.main]]
     identifier = 'philosophy'
     name = '哲学思考'
     url = '/philosophy/'
-    weight = 30
-  [[menu.main]]
-    identifier = 'videos'
-    name = '视频'
-    url = '/videos/'
-    weight = 40
-  [[menu.main]]
-    identifier = 'audio'
-    name = '音频'
-    url = '/audio/'
-    weight = 45
+    weight = 50
   [[menu.main]]
     identifier = 'about'
     name = '关于'
     url = '/about/'
-    weight = 50
+    weight = 60
+
+  # 以下收进「更多」下拉
+  [[menu.main]]
+    identifier = 'videos'
+    parent = 'more'
+    name = '视频'
+    url = '/videos/'
+    weight = 70
+  [[menu.main]]
+    identifier = 'audio'
+    parent = 'more'
+    name = '音频'
+    url = '/audio/'
+    weight = 71
+  [[menu.main]]
+    identifier = 'updates'
+    parent = 'more'
+    name = '更新日志'
+    url = '/updates/'
+    weight = 72
+  [[menu.main]]
+    identifier = 'resume'
+    parent = 'more'
+    name = '简历'
+    url = '/resume/'
+    weight = 73
+  [[menu.main]]
+    identifier = 'timeline'
+    parent = 'more'
+    name = '时间线'
+    url = '/timeline/'
+    weight = 74
+  [[menu.main]]
+    identifier = 'friends'
+    parent = 'more'
+    name = '友链'
+    url = '/friends/'
+    weight = 75
+  [[menu.main]]
+    identifier = 'rss'
+    parent = 'more'
+    name = 'RSS 订阅'
+    url = '/index.xml'
+    weight = 76
+  [[menu.main]]
+    identifier = 'more'
+    name = '更多'
+    weight = 90
   [[menu.main]]
     identifier = 'search'
     name = '🔍'

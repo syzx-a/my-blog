@@ -1,0 +1,47 @@
+{{- /* 页脚：在主题默认基础上增加订阅引导 */ -}}
+<footer class="footer">
+  <div class="footer-subscribe">
+    <p class="footer-subscribe-title">持续更新，不错过新文章</p>
+    <p class="footer-subscribe-desc">
+      新专栏、新课程上线时，第一时间发到你的阅读器。
+    </p>
+    <div class="footer-subscribe-actions">
+      <a class="subscribe-btn" href="{{ "index.xml" | absURL }}" title="RSS 订阅">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+        <span>RSS 订阅</span>
+      </a>
+      <a class="subscribe-btn" href="{{ "updates/" | relURL }}" title="查看更新日志">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        <span>更新日志</span>
+      </a>
+      <a class="subscribe-btn" href="{{ "courses/" | relURL }}" title="查看课程">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 10L12 5 2 10l10 5 10-5z"></path>
+          <path d="M6 12v5c3 2 9 2 12 0v-5"></path>
+        </svg>
+        <span>课程</span>
+      </a>
+    </div>
+  </div>
+
+  <span class="footer-text">
+    © {{ now.Year }} {{ .Site.Params.author }} ·
+    <a href="{{ "columns/" | relURL }}">专栏</a> ·
+    <a href="{{ "courses/" | relURL }}">课程</a> ·
+    <a href="{{ "updates/" | relURL }}">更新</a> ·
+    <a href="{{ "index.xml" | absURL }}">RSS</a>
+  </span>
+  <span class="footer-text">
+    Powered by
+    <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &amp;
+    <a href="https://github.com/adityatelange/hugo-PaperMod" rel="noopener" target="_blank">PaperMod</a>
+  </span>
+</footer>
+<script src="{{ "js/menu-dropdown.js" | relURL }}"></script>

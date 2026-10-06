@@ -18,8 +18,12 @@ cover:
   image: "/images/posts/guiguzi-01/封面_鬼谷子的术.jpg"
   alt: "鬼谷子的术，根在哪里？"
 showToc: true
+slug: "01-鬼谷子其人其书"
+aliases:
+  - "/posts/鬼谷子的术/guiguzi-01-daolun/"
+  - "/posts/鬼谷子的术/2026-10-06-guiguzi-01-daolun/"
+canonical: "https://syzx.space/posts/鬼谷子的术/01-鬼谷子其人其书/"
 ---
-
 > 鬼谷术从哪里来，根在哪里。这是识微堂的鬼谷子系列，我们先来立住这个根。
 
 ---

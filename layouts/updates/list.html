@@ -6,8 +6,12 @@
       <span class="icon">🔄</span>
     </div>
     <h1>{{ .Title }}</h1>
-    <div class="page-description">追踪网站最新内容更新</div>
+    <div class="page-description">{{ with .Params.description }}{{ . }}{{ else }}追踪网站最新内容更新{{ end }}</div>
   </header>
+
+  {{ with .Content }}
+  <div class="page-intro">{{ . }}</div>
+  {{ end }}
 
   <div class="updates-list">
     {{ $pages := where .Site.RegularPages "Type" "not in" (slice "updates" "search" "sitemap") }}

@@ -18,8 +18,12 @@ cover:
   image: "/images/posts/guiguzi-02/封面_捭阖.jpg"
   alt: "捭阖：言说的总开关"
 showToc: true
+slug: "02-捭阖言说的总开关"
+aliases:
+  - "/posts/鬼谷子的术/guiguzi-02-baihe/"
+  - "/posts/鬼谷子的术/2026-10-06-guiguzi-02-baihe/"
+canonical: "https://syzx.space/posts/鬼谷子的术/02-捭阖言说的总开关/"
 ---
-
 > 本章对应《鬼谷子·捭阖第一》。捭阖是全书第一篇，也是言说之术的总纲。第一编解决了看清的问题，从本章起，进入说清的阶段。
 
 ---

@@ -39,3 +39,6 @@ node_modules/
 .Trashes
 ehthumbs.db
 Desktop.ini
+
+# WorkBuddy 工作目录（备份与临时脚本，不入库）
+.workbuddy/
