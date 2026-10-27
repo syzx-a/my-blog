@@ -30,11 +30,11 @@
       {{ end }}
     </div>
     
-    {{ if .Params.cover }}
-    <figure class="entry-cover">
-      <img loading="lazy" src="{{ .Params.cover }}" alt="{{ .Title }}">
-    </figure>
-    {{ end }}
+    {{- /* cover 为嵌套对象（cover.image / cover.alt），交给主题 partial 渲染；
+           不可直接输出 .Params.cover，否则 map 会被转成 #ZgotmplZ */}}
+    {{- if .Params.cover }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" false) }}
+    {{- end }}
   </header>
 
   <div class="post-content">
