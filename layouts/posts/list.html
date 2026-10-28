@@ -20,7 +20,17 @@
   </header>
 
   {{- /* 文章列表 — 复用首页卡片风格 */}}
-  {{ range .Paginator.Pages }}
+  {{- /*
+    递归收录：带 _index.md 的子系列（静坐内观讲义、道家十日内观）会被 Hugo
+    当作独立 section，其文章不再出现在父级 .Pages 里，导致本列表漏收。
+    统一改用 RegularPagesRecursive，不分有无 _index.md 都能收全。
+  */}}
+  {{- $pages := .Pages }}
+  {{- if eq .Section "posts" }}
+    {{- $pages = .RegularPagesRecursive }}
+  {{- end }}
+  {{- $paginator := .Paginate $pages }}
+  {{ range $paginator.Pages }}
   <article class="post-entry">
     {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
     {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
@@ -43,14 +53,14 @@
   </article>
   {{ end }}
 
-  {{ if gt .Paginator.TotalPages 1 }}
+  {{ if gt $paginator.TotalPages 1 }}
   <nav class="pagination">
-    {{ if .Paginator.HasPrev }}
-    <a href="{{ .Paginator.Prev.URL }}" class="prev">← 上一页</a>
+    {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" class="prev">← 上一页</a>
     {{ end }}
-    <span class="page-info">第 {{ .Paginator.PageNumber }} 页，共 {{ .Paginator.TotalPages }} 页</span>
-    {{ if .Paginator.HasNext }}
-    <a href="{{ .Paginator.Next.URL }}" class="next">下一页 →</a>
+    <span class="page-info">第 {{ $paginator.PageNumber }} 页，共 {{ $paginator.TotalPages }} 页</span>
+    {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" class="next">下一页 →</a>
     {{ end }}
   </nav>
   {{ end }}

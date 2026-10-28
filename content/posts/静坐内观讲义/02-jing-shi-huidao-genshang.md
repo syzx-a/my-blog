@@ -14,6 +14,9 @@ tags:
   - 修身养性
 series:
   - 静坐内观讲义
+cover:
+  image: "/images/posts/jingzuo-02/01-cover.jpg"
+  alt: "静坐内观讲义（下）：静是回到根上"
 showToc: true
 ---
 
