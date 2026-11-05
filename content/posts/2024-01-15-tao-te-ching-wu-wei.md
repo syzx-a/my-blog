@@ -2,10 +2,7 @@
 title: "《道德经》：无为而治的智慧"
 date: 2024-01-15T10:00:00+08:00
 draft: false
-cover:
-  image: "/images/posts/tao-te-ching.jpg"
-  alt: "道德经"
-  caption: ""
+# TODO: 封面图片待补（原 tao-te-ching.jpg 文件不存在，已移除以免破图）
 tags: ["道德经", "道家", "老子", "无为"]
 categories: ["经典解读"]
 description: "深入理解老子的无为思想，以及如何在现代生活中运用这种智慧"

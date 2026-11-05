@@ -2,10 +2,7 @@
 title: "《金刚经》：应无所住而生其心"
 date: 2024-02-01T14:00:00+08:00
 draft: false
-cover:
-  image: "/images/posts/diamond-sutra.jpg"
-  alt: "金刚经"
-  caption: ""
+# TODO: 封面图片待补（原 diamond-sutra.jpg 文件不存在，已移除以免破图）
 tags: ["金刚经", "佛家", "空性", "智慧"]
 categories: ["经典解读"]
 description: "解读《金刚经》的核心思想，以及如何在日常生活中保持清净心"

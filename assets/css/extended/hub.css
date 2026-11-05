@@ -46,6 +46,13 @@
 .tone-gold { --sy-tone: var(--sy-gold); --sy-tone-soft: var(--sy-gold-soft); }
 
 .sy-wrap { max-width: var(--sy-max); margin: 0 auto; padding: 0 20px; }
+
+/* PaperMod 的 .main / .footer 默认 max-width 只有 768px（--main-width 720 + gap 24×2）。
+   若不覆盖，上面所有 1120px 的组件都会被父容器压成窄条，窗口两侧留出大片空白。
+   只对 sy-wide 页面放宽，其他页面保持主题原样。 */
+body.sy-wide .main,
+body.sy-wide .footer { max-width: 1180px; }
+
 .sy-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .sy-muted { color: var(--sy-muted); font-size: 0.9rem; margin: 0; }
 .sy-kicker { margin: 0 0 12px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sy-tone, var(--sy-cinnabar)); }
@@ -208,9 +215,11 @@
 /* ---------- 文章页闭环 ---------- */
 .sy-read-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; background: transparent; }
 .sy-read-progress span { display: block; height: 100%; width: 100%; transform: scaleX(0); transform-origin: 0 50%; background: var(--sy-cinnabar); }
-.sy-post-wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
-.sy-post-layout { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 36px; align-items: start; }
-.sy-post-main { min-width: 0; }
+.sy-post-wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+/* 正文固定 760px（约 38 字/行，中文阅读舒适宽度），目录 220px，
+   两列作为一组居中；不随窗口无限拉宽，避免每行过长。 */
+.sy-post-layout { display: grid; grid-template-columns: minmax(0, 760px) 220px; gap: 36px; justify-content: center; align-items: start; }
+.sy-post-main { min-width: 0; max-width: 760px; }
 .sy-toc-side { position: sticky; top: 84px; max-height: calc(100vh - 110px); overflow-y: auto; padding-left: 14px; border-left: 1px solid var(--sy-line); font-size: 0.84rem; }
 .sy-toc-title { margin: 0 0 10px; font-size: 0.82rem; font-weight: 600; color: var(--sy-muted); }
 .sy-toc-side ul { list-style: none; margin: 0; padding: 0; }
@@ -246,13 +255,18 @@
 .sy-post-footer-section h2 { margin: 0 0 4px; font-family: var(--sy-serif); font-size: 1.25rem; color: var(--sy-ink); }
 
 /* ---------- 响应式 ---------- */
+/* 1180px 以下放不下「760 正文 + 220 目录 + 36 间距 + 内外边距」，
+   提前收成单列并把目录折叠进正文顶部，避免目录把正文再次挤窄。 */
+@media (max-width: 1180px) {
+  .sy-post-layout { grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+  .sy-post-main { max-width: 760px; margin: 0 auto; }
+  .sy-toc-side { display: none; }
+}
 @media (max-width: 900px) {
   .sy-hero-grid { grid-template-columns: 1fr; gap: 24px; }
   .sy-hero-art { display: none; }
   .sy-hub-hero-grid { grid-template-columns: 1fr; }
   .sy-hub-mark { display: none; }
-  .sy-post-layout { grid-template-columns: 1fr; }
-  .sy-toc-side { display: none; }
 }
 @media (max-width: 600px) {
   .sy-hero-stats { gap: 22px; }
@@ -271,7 +285,7 @@
 .sy-post-footer-section { margin: 28px 0; }
 .sy-post-footer-section h2 { margin-bottom: 4px; }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   .sy-toc-mobile { display: block; margin: 14px 0; padding: 12px 16px; border: 1px solid var(--sy-line); border-radius: 10px; background: var(--sy-surface-2); font-size: 0.9rem; }
   .sy-toc-mobile summary { cursor: pointer; color: var(--sy-ink); font-weight: 600; }
   .sy-toc-mobile nav { margin-top: 10px; }

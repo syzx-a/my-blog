@@ -2,10 +2,7 @@
 title: "人生的意义是什么？"
 date: 2024-02-15T10:00:00+08:00
 draft: false
-cover:
-  image: "/images/posts/meaning-of-life.jpg"
-  alt: "人生意义"
-  caption: ""
+# TODO: 封面图片待补（原 meaning-of-life.jpg 文件不存在，已移除以免破图）
 tags: ["人生", "意义", "哲学", "思考"]
 categories: ["哲学思考"]
 description: "探讨人生意义的哲学问题，从东西方智慧中寻找答案"

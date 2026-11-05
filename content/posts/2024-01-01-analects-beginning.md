@@ -2,10 +2,7 @@
 title: "《论语》开篇：学而时习之"
 date: 2024-01-01T08:00:00+08:00
 draft: false
-cover:
-  image: "/images/posts/analects.jpg"
-  alt: "论语"
-  caption: ""
+# TODO: 封面图片待补（原 analects.jpg 文件不存在，已移除以免破图）
 tags: ["论语", "儒家", "孔子", "经典"]
 categories: ["经典解读"]
 description: "解读《论语》开篇三句话的深层含义，以及对我们现代生活的启示"
