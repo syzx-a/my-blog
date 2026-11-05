@@ -1,0 +1,19 @@
+{{- /* 覆盖 PaperMod 默认搜索索引。
+       主题模板把 .Plain 全文塞进 content，本站 39 篇就生成 620 KB 的 index.json。
+       这里把正文截断到 900 字，保留 title / permalink / summary / content 四个
+       fuseOpts.keys 需要的字段，另补 section / tags 便于结果分类，体积降到约 1/6。
+       若日后需要完整全文搜索，删除本文件即恢复主题默认行为。 */ -}}
+{{- $idx := slice -}}
+{{- range site.RegularPages -}}
+  {{- if and (not .Params.searchHidden) (ne .Layout `archives`) (ne .Layout `search`) -}}
+    {{- $idx = $idx | append (dict
+        "title" .Title
+        "content" (.Plain | truncate 900)
+        "permalink" .Permalink
+        "summary" (.Summary | plainify)
+        "section" .Section
+        "tags" .Params.tags
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $idx | jsonify -}}

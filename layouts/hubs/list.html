@@ -1,0 +1,39 @@
+{{ define "main" }}
+<div class="sy-wrap sy-hubs-index">
+  <header class="sy-page-head">
+    <p class="sy-kicker">TOPICS</p>
+    <h1>专题</h1>
+    <p class="sy-page-lead">{{ .Description }}</p>
+  </header>
+
+  {{- with .Content }}<div class="sy-prose sy-intro">{{ . }}</div>{{- end }}
+
+  <div class="sy-pillar-grid">
+    {{- range .Pages.ByWeight }}
+    {{- $pages := partial "hub_pages.html" . -}}
+    {{- $recent := first 4 (sort $pages "Date" "desc") -}}
+    <article class="sy-pillar tone-{{ .Params.tone | default "jade" }}">
+      <div class="sy-pillar-head">
+        <span class="sy-pillar-glyph" aria-hidden="true">{{ .Params.glyph }}</span>
+        <div>
+          <p class="sy-kicker">{{ .Params.kicker }}</p>
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        </div>
+      </div>
+      <p class="sy-pillar-lead">{{ .Params.lead }}</p>
+      <ul class="sy-pillar-list">
+        {{- range $recent }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "2006" }}</span></li>
+        {{- end }}
+      </ul>
+      <a class="sy-pillar-cta" href="{{ .RelPermalink }}">进入专题 · {{ len $pages }} 篇文章 →</a>
+    </article>
+    {{- end }}
+  </div>
+
+  <div class="sy-hubs-foot">
+    <a class="sy-btn sy-btn-ghost" href="{{ "allposts/" | relURL }}">按年份浏览全部文章</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "columns/" | relURL }}">连载专栏</a>
+  </div>
+</div>
+{{ end }}

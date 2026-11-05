@@ -1,0 +1,25 @@
+{{- /* 返回某个专题 Hub 匹配到的全部文章。
+       匹配规则来自该页 frontmatter 的 match.categories / match.series / match.sections。
+       用法：{{ $pages := partial "hub_pages.html" . }} */ -}}
+{{- $hub := . -}}
+{{- $cats := slice -}}
+{{- $sers := slice -}}
+{{- $secs := slice -}}
+{{- with $hub.Params.match -}}
+  {{- with index . "categories" }}{{ $cats = . }}{{ end -}}
+  {{- with index . "series" }}{{ $sers = . }}{{ end -}}
+  {{- with index . "sections" }}{{ $secs = . }}{{ end -}}
+{{- end -}}
+{{- $out := slice -}}
+{{- range $p := site.RegularPages -}}
+  {{- $hit := false -}}
+  {{- with $p.Params.categories -}}
+    {{- range . }}{{ if in $cats . }}{{ $hit = true }}{{ end }}{{ end -}}
+  {{- end -}}
+  {{- with $p.Params.series -}}
+    {{- range . }}{{ if in $sers . }}{{ $hit = true }}{{ end }}{{ end -}}
+  {{- end -}}
+  {{- if in $secs $p.Section }}{{ $hit = true }}{{ end -}}
+  {{- if $hit }}{{ $out = $out | append $p }}{{ end -}}
+{{- end -}}
+{{- return $out -}}

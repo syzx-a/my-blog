@@ -1,111 +1,174 @@
 {{ define "main" }}
+{{- $self := . -}}
+{{- /* 反查本文属于哪些专题，用于顶部 chip、收录 banner 与延伸阅读 */ -}}
+{{- $hubs := (site.GetPage "hubs").Pages.ByWeight -}}
+{{- $myHubs := slice -}}
+{{- range $h := $hubs -}}
+  {{- $pool := partial "hub_pages.html" $h -}}
+  {{- $found := false -}}
+  {{- range $p := $pool -}}
+    {{- if eq $p.RelPermalink $self.RelPermalink }}{{ $found = true }}{{ end -}}
+  {{- end -}}
+  {{- if $found }}{{ $myHubs = $myHubs | append $h }}{{ end -}}
+{{- end -}}
 
-<article class="post-single">
-  <header class="post-header">
-    {{ partial "breadcrumbs.html" . }}
-    <h1 class="post-title">
-      {{ .Title }}
-      {{ if .Draft }}
-      <span class="draft-badge">草稿</span>
-      {{ end }}
-    </h1>
-    
-    {{ if .Description }}
-    <div class="post-description">
-      {{ .Description }}
-    </div>
-    {{ end }}
-    
-    <div class="post-meta">
-      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-        {{ .Date.Format "2006年1月2日" }}
-      </time>
-      
-      {{ if .Params.tags }}
-      <div class="post-tags">
-        {{ range .Params.tags }}
-        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">#{{ . }}</a>
-        {{ end }}
+{{- /* 延伸阅读：优先同专题，补足到 6 篇；无专题时退回同分类 */ -}}
+{{- $related := slice -}}
+{{- $seen := slice -}}
+{{- range $h := $myHubs -}}
+  {{- range $p := (sort (partial "hub_pages.html" $h) "Date" "desc") -}}
+    {{- if and (lt (len $related) 6) (ne $p.RelPermalink $self.RelPermalink) (not (in $seen $p.RelPermalink)) -}}
+      {{- $seen = $seen | append $p.RelPermalink -}}
+      {{- $related = $related | append $p -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if lt (len $related) 3 -}}
+  {{- range $p := (where (where site.RegularPages "Permalink" "!=" $self.Permalink) "Params.categories" "intersect" $self.Params.categories) -}}
+    {{- if and (lt (len $related) 6) (not (in $seen $p.RelPermalink)) -}}
+      {{- $seen = $seen | append $p.RelPermalink -}}
+      {{- $related = $related | append $p -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<div class="sy-read-progress" aria-hidden="true"><span></span></div>
+
+<article class="post-single sy-post">
+  <div class="sy-post-wrap">
+    <div class="sy-post-layout">
+      <div class="sy-post-main">
+        <header class="post-header">
+          {{ partial "breadcrumbs.html" . }}
+          <h1 class="post-title">
+            {{ .Title }}
+            {{ if .Draft }}<span class="draft-badge">草稿</span>{{ end }}
+          </h1>
+
+          {{ if .Description }}<div class="post-description">{{ .Description }}</div>{{ end }}
+
+          <div class="post-meta">
+            <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006年1月2日" }}</time>
+            {{ if .Params.tags }}
+            <div class="post-tags">
+              {{ range .Params.tags }}<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">#{{ . }}</a>{{ end }}
+            </div>
+            {{ end }}
+          </div>
+
+          <div class="sy-meta-line">
+            <span>{{ .ReadingTime }} 分钟</span>
+            <span>约 {{ countrunes .Plain }} 字</span>
+            {{- with .Params.series }}<span>系列：{{ index . 0 }}</span>{{- end }}
+          </div>
+
+          {{- if $myHubs }}
+          <div class="sy-post-chips">
+            {{- range $h := $myHubs }}
+            <a class="tone-{{ $h.Params.tone | default "jade" }}" href="{{ $h.RelPermalink }}">专题 · {{ $h.Title }}</a>
+            {{- end }}
+          </div>
+          {{- end }}
+
+          {{- /* cover 必须交给主题 partial 渲染，不可直接输出 .Params.cover（map 会变 #ZgotmplZ） */ -}}
+          {{- if .Params.cover }}
+          {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" false) }}
+          {{- end }}
+        </header>
+
+        {{- with .TableOfContents }}
+        <details class="sy-toc-mobile">
+          <summary>本文目录</summary>
+          {{ . }}
+        </details>
+        {{- end }}
+
+        <div class="post-content">{{ .Content }}</div>
+
+        <footer class="post-footer">
+          {{- with .Params.tags }}
+          <ul class="post-tags">
+            {{ range . }}<li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a></li>{{ end }}
+          </ul>
+          {{- end }}
+
+          {{- /* 系列文章导航（原有功能保留） */ -}}
+          {{- with .Params.series }}
+            {{- $seriesName := index . 0 -}}
+            {{- $sameSeries := where $.Site.RegularPages "Params.series" "intersect" . -}}
+            {{- if gt (len $sameSeries) 1 }}
+          <section class="post-series">
+            <h3>本系列文章 · {{ $seriesName }}</h3>
+            <ol class="series-list">
+              {{- range sort $sameSeries "Params.slug" "asc" }}
+              <li{{ if eq .RelPermalink $self.RelPermalink }} class="current"{{ end }}>
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                {{- if eq .RelPermalink $self.RelPermalink }}<span class="series-current-marker">当前</span>{{ end }}
+              </li>
+              {{- end }}
+            </ol>
+          </section>
+            {{- end }}
+          {{- end }}
+
+          {{- /* 本文收录于专题：把读者送回上一层 */ -}}
+          {{- range $h := $myHubs }}
+          <a class="sy-hub-banner tone-{{ $h.Params.tone | default "jade" }}" href="{{ $h.RelPermalink }}">
+            <span class="sy-hub-banner-icon" aria-hidden="true">{{ $h.Params.glyph }}</span>
+            <span class="sy-hub-banner-body">
+              <small>本文收录于专题</small>
+              <strong>{{ $h.Title }}</strong>
+              <span>{{ $h.Params.lead }}</span>
+            </span>
+          </a>
+          {{- end }}
+
+          <aside class="sy-author-card">
+            <div class="sy-author-avatar" aria-hidden="true">用</div>
+            <div class="sy-author-body">
+              <p class="sy-kicker">关于作者</p>
+              <h2 class="sy-author-name">{{ site.Params.author }} · {{ site.Params.authorRole }}</h2>
+              <p class="sy-author-bio">{{ site.Params.authorMotto }}。{{ site.Params.brandLead }}</p>
+              <a href="{{ "about/" | relURL }}">了解更多 →</a>
+            </div>
+          </aside>
+
+          {{- if or .NextInSection .PrevInSection }}
+          <nav class="sy-post-nav" aria-label="相邻文章">
+            {{ with .NextInSection }}
+            <a href="{{ .Permalink }}"><small>上一篇</small><strong>{{ .Title }}</strong></a>
+            {{ end }}
+            {{ with .PrevInSection }}
+            <a href="{{ .Permalink }}"><small>下一篇</small><strong>{{ .Title }}</strong></a>
+            {{ end }}
+          </nav>
+          {{- end }}
+
+          {{- if $related }}
+          <section class="sy-post-footer-section">
+            <h2>延伸阅读</h2>
+            <p class="sy-muted">同一专题里，接着读这些</p>
+            <div class="sy-related-grid">
+              {{- range $related }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{- end }}
+            </div>
+          </section>
+          {{- end }}
+
+          {{ if and (.Param "comments") (templates.Exists "partials/comments.html") }}
+          <div class="post-comments">{{ partial "comments.html" . }}</div>
+          {{ end }}
+        </footer>
       </div>
-      {{ end }}
-    </div>
-    
-    {{- /* cover 为嵌套对象（cover.image / cover.alt），交给主题 partial 渲染；
-           不可直接输出 .Params.cover，否则 map 会被转成 #ZgotmplZ */}}
-    {{- if .Params.cover }}
-    {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" false) }}
-    {{- end }}
-  </header>
 
-  <div class="post-content">
-    {{ .Content }}
-  </div>
-
-  <footer class="post-footer">
-    {{ if .Params.tags }}
-    <ul class="post-tags">
-      {{ range .Params.tags }}
-      <li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a></li>
-      {{ end }}
-    </ul>
-    {{ end }}
-
-    {{- /* 系列文章导航 */}}
-    {{- with .Params.series }}
-      {{- $seriesName := index . 0 }}
-      {{- $sameSeries := where $.Site.RegularPages "Params.series" "intersect" . }}
-      {{- if gt (len $sameSeries) 1 }}
-    <section class="post-series">
-      <h3>📖 本系列文章</h3>
-      <ol class="series-list">
-        {{- range $sameSeries }}
-        <li{{ if eq .RelPermalink $.RelPermalink }} class="current"{{ end }}>
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
-          {{- if eq .RelPermalink $.RelPermalink }}<span class="series-current-marker">👈 当前</span>{{ end }}
-        </li>
-        {{- end }}
-      </ol>
-    </section>
+      {{- with .TableOfContents }}
+      <aside class="sy-toc-side" aria-label="本文目录">
+        <div class="sy-toc-sticky">
+          <p class="sy-toc-title">本文目录</p>
+          {{ . }}
+        </div>
+      </aside>
       {{- end }}
-    {{- end }}
-
-    {{- /* 相关文章推荐（同分类或同标签）*/}}
-    {{- $related := first 3 (where (where $.Site.RegularPages "Permalink" "!=" $.Permalink) "Params.categories" "intersect" $.Params.categories) }}
-    {{- if and $related (gt (len $related) 0) }}
-    <section class="post-related">
-      <h3>🔗 相关推荐</h3>
-      <ul class="related-list">
-        {{- range $related }}
-        <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
-        {{- end }}
-      </ul>
-    </section>
-    {{- end }}
-
-    {{ if or .NextInSection .PrevInSection }}
-    <nav class="paginav">
-      {{ with .NextInSection }}
-      <a class="prev" href="{{ .Permalink }}">
-        <span class="title">← {{ i18n "prev_page" }}</span>
-        <span class="arrow">{{ .Name }}</span>
-      </a>
-      {{ end }}
-      
-      {{ with .PrevInSection }}
-      <a class="next" href="{{ .Permalink }}">
-        <span class="title">{{ i18n "next_page" }} →</span>
-        <span class="arrow">{{ .Name }}</span>
-      </a>
-      {{ end }}
-    </nav>
-    {{ end }}
-
-    {{ if and (.Param "comments") (templates.Exists "partials/comments.html") }}
-    <div class="post-comments">
-      {{ partial "comments.html" . }}
     </div>
-    {{ end }}
-  </footer>
+  </div>
 </article>
-
 {{ end }}

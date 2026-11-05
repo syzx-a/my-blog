@@ -1,64 +1,121 @@
-{{- define "main" }}
-{{- /* 首页欢迎区 */}}
-<header class="page-header home-header">
-  <div class="home-info">
-    {{- with .Site.Params.homeInfoParams }}
-    <h1 class="home-title">{{ .Title | markdownify }}</h1>
-    <p class="home-content">{{ .Content | markdownify }}</p>
+{{- define "main" -}}
+{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") -}}
+{{- $hubs := (site.GetPage "hubs").Pages.ByWeight -}}
+{{- $recent := first 6 (sort $all "Date" "desc") -}}
+
+<section class="sy-hero">
+  <div class="sy-wrap sy-hero-grid">
+    <div class="sy-hero-copy">
+      <p class="sy-kicker"><span class="sy-pulse" aria-hidden="true"></span>{{ site.Params.brandKicker }}</p>
+      <h1 class="sy-hero-title">以经典为根，<em class="sy-jade">以日用为归</em>。</h1>
+      <p class="sy-hero-lead">{{ site.Params.brandLead }}</p>
+      <form class="sy-quick-search" id="sy-quick-form" role="search" autocomplete="off">
+        <label class="sy-sr-only" for="sy-quick-input">搜索站内文章</label>
+        <input type="search" id="sy-quick-input" placeholder="搜索文章标题、分类、标签…" spellcheck="false">
+        <button type="submit" aria-label="提交搜索">搜索</button>
+        <ul class="sy-quick-results" id="sy-quick-results" role="listbox" hidden></ul>
+      </form>
+      <div class="sy-hero-cta">
+        <a class="sy-btn sy-btn-solid" href="#start">从这里开始</a>
+        <a class="sy-btn sy-btn-ghost" href="{{ "hubs/" | relURL }}">浏览专题</a>
+        <a class="sy-btn sy-btn-ghost" href="{{ "about/" | relURL }}">关于我</a>
+      </div>
+      <ul class="sy-hero-stats">
+        <li><strong>{{ len $all }}</strong><span>篇文章</span></li>
+        <li><strong>{{ len $hubs }}</strong><span>个专题</span></li>
+        <li><strong>{{ len site.Taxonomies.series }}</strong><span>个连载系列</span></li>
+      </ul>
+    </div>
+    <div class="sy-hero-art" aria-hidden="true">
+      <div class="sy-enso"></div>
+      <div class="sy-hero-seal">用</div>
+      <a class="sy-float-badge sy-fb-0" href="{{ "hubs/neiguan/" | relURL }}" tabindex="-1">内观修心</a>
+      <a class="sy-float-badge sy-fb-1" href="{{ "hubs/jingdian/" | relURL }}" tabindex="-1">经典解读</a>
+    </div>
+  </div>
+</section>
+
+<section class="sy-wrap sy-pillars" aria-label="内容专题">
+  {{- range $h := $hubs }}
+  {{- $pages := partial "hub_pages.html" $h -}}
+  {{- $recent4 := first 4 (sort $pages "Date" "desc") -}}
+  <article class="sy-pillar tone-{{ $h.Params.tone | default "jade" }}">
+    <div class="sy-pillar-head">
+      <span class="sy-pillar-glyph" aria-hidden="true">{{ $h.Params.glyph }}</span>
+      <div>
+        <p class="sy-kicker">{{ $h.Params.kicker }}</p>
+        <h2><a href="{{ $h.RelPermalink }}">{{ $h.Title }}</a></h2>
+      </div>
+    </div>
+    <p class="sy-pillar-lead">{{ $h.Params.lead }}</p>
+    <ul class="sy-pillar-list">
+      {{- range $recent4 }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "2006" }}</span></li>
+      {{- end }}
+    </ul>
+    <a class="sy-pillar-cta" href="{{ $h.RelPermalink }}">进入专题 · {{ len $pages }} 篇文章 →</a>
+  </article>
+  {{- end }}
+</section>
+
+<section class="sy-wrap sy-start" id="start">
+  <div class="sy-start-card">
+    <div class="sy-start-label"><span class="sy-seal" aria-hidden="true">始</span>从这里开始</div>
+    <div class="sy-prose">
+      <h3>按你想解决的事挑一篇</h3>
+      <p>文章按日期排是给熟客看的。第一次来，不妨按自己的问题挑一篇入手。</p>
+      <ul class="sy-start-list">
+        {{- range site.Params.startHere }}
+        <li>
+          <span class="sy-start-intent">{{ .label }}</span>
+          <a href="{{ .url }}">{{ .title }}</a>
+          <small>{{ .note }}</small>
+        </li>
+        {{- end }}
+      </ul>
+      <p class="sy-start-foot">也可以直接去 <a href="{{ "hubs/" | relURL }}">专题</a> 按体系读，或去 <a href="{{ "allposts/" | relURL }}">全部文章</a> 按年份翻。</p>
+    </div>
+  </div>
+</section>
+
+<section class="sy-wrap sy-latest">
+  <div class="sy-sec-head">
+    <h2>最新文章</h2>
+    <a class="sy-sec-link" href="{{ "allposts/" | relURL }}">全部文章 · {{ len $all }} →</a>
+  </div>
+  <div class="sy-card-grid">
+    {{- range $recent }}
+    <article class="sy-card">
+      <div class="sy-card-meta">
+        {{- with .Params.categories }}
+        <a class="sy-chip" href="{{ (printf "categories/%s/" (index . 0 | urlize)) | relURL }}">{{ index . 0 }}</a>
+        {{- end }}
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+      </div>
+      <h3 class="sy-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="sy-card-excerpt">{{ .Summary | plainify | truncate 110 }}</p>
+      <div class="sy-card-foot"><span>{{ .ReadingTime }} 分钟</span>{{- with .Params.videoId }}<span class="sy-video-tag">视频</span>{{- end }}</div>
+    </article>
     {{- end }}
   </div>
-  {{- /* 分类快速导航 */}}
-  <nav class="home-categories">
-    <span class="home-categories-label">探索文章：</span>
-    <a class="home-cat-link" href="/posts/经典解读/">📜 经典解读</a>
-    <a class="home-cat-link" href="/posts/道家十日内观/">🧘 十日内观</a>
-    <a class="home-cat-link" href="/wisdom/">☯️ 儒释道</a>
-    <a class="home-cat-link" href="/philosophy/">💭 哲学思考</a>
-    <a class="home-cat-link" href="/videos/">🎬 视频</a>
-    <a class="home-cat-link" href="/audio/">🎙️ 音频</a>
-  </nav>
-  <hr class="home-divider">
-  <h2 class="home-section-title">📝 最新文章</h2>
-</header>
+</section>
 
-{{- /* 只显示有日期的文章（排除 section 索引页），按日期降序 */}}
-{{- $pages := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") }}
-{{- $pages = where $pages "Params.hiddenInHomeList" "ne" true }}
-{{- $paginator := .Paginate $pages }}
-{{- range $index, $page := $paginator.Pages }}
-<article class="post-entry">
-  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
-  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">
-      <a href="{{ .Permalink }}">{{- .Title }} {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[草稿]</span></sup>{{- end }}</a>
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>{{ .Summary | plainify | truncate 200 }}</p>
+<section class="sy-wrap sy-connect">
+  <div class="sy-sec-head"><h2>一起交流</h2></div>
+  <p>文章写在网站，视频发在 B 站和抖音，日常想法留在公众号。三处是同一条线索。</p>
+  <div class="sy-connect-links">
+    {{- range site.Params.socialIcons }}
+    <a class="sy-btn sy-btn-ghost" href="{{ .url }}" rel="noopener noreferrer">{{ .title | default .name }}</a>
+    {{- end }}
+    <a class="sy-btn sy-btn-ghost" href="{{ "about/" | relURL }}">了解更多</a>
   </div>
-  <footer class="entry-footer">
-    {{- with .Params.categories }}
-    <span class="entry-categories">
-      {{- range . }}<a class="category" href="{{ "categories/" | relURL }}{{ . | urlize }}">{{ . }}</a>{{ end }}
-    </span>
-    {{- end }}
-    <span class="entry-date">📅 {{ .Date.Format "2006-01-02" }}</span>
-  </footer>
-</article>
-{{- end }}
+</section>
 
-{{- if gt $paginator.TotalPages 1 }}
-<footer class="page-footer">
-  <nav class="pagination">
-    {{- if $paginator.HasPrev }}
-    <a class="prev" href="{{ $paginator.Prev.URL }}">← 上一页</a>
-    {{- end }}
-    <span>第 {{ $paginator.PageNumber }} 页 / 共 {{ $paginator.TotalPages }} 页</span>
-    {{- if $paginator.HasNext }}
-    <a class="next" href="{{ $paginator.Next.URL }}">下一页 →</a>
-    {{- end }}
-  </nav>
-</footer>
-{{- end }}
+<script type="application/json" id="sy-quick-index">
+{{- $idx := slice -}}
+{{- range $all -}}
+{{- $idx = $idx | append (dict "t" .Title "u" .RelPermalink "d" (.Date.Format "2006-01-02") "c" .Params.categories "g" .Params.tags) -}}
+{{- end -}}
+{{- $idx | jsonify | safeJS -}}
+</script>
 {{- end }}

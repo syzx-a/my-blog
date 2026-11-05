@@ -1,121 +1,60 @@
-{{- /* SEO 优化 - Open Graph, Twitter Card, JSON-LD */ -}}
+{{- /* SEO 补强（2026-11-05）
+       注意：PaperMod 的 head.html 在生产环境已输出 canonical / OG / Twitter / robots / article:*，
+       templates/opengraph.html 也原生支持嵌套的 cover.image 与 og:see_also。
+       这里只补主题没有的部分，避免同一页面出现重复 meta 与两个 canonical。
+       schema_json.html 已覆盖为空，全站结构化数据统一由本文件末尾的 @graph 输出。 */ -}}
 
-{{- /* Open Graph / Facebook */ -}}
-<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
-<meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }} - {{ .Site.Params.description | truncate 40 }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}">
-<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
-<meta property="og:image" content="{{ with .Params.cover.image }}{{ . | absURL }}{{ else }}{{ "images/og-default.svg" | absURL }}{{ end }}">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:site_name" content="{{ .Site.Title }}">
-{{- if .IsPage }}
-<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
-<meta property="article:author" content="{{ .Site.Params.author }}">
-{{- with .Params.tags }}
-{{- range first 3 . }}
-<meta property="article:tag" content="{{ . }}">
-{{- end }}
-{{- end }}
+{{- /* 默认分享图：仅当页面既无 cover 也无正文图片时兜底，避免与主题 og:image 重复 */ -}}
+{{- if not .Params.cover.image -}}
+  {{- $pageImages := partial "templates/_funcs/get-page-images" . -}}
+  {{- if not $pageImages }}
+<meta property="og:image" content="{{ "images/og-default.svg" | absURL }}">
+  {{- end }}
 {{- end }}
 
-{{- /* Twitter Card */ -}}
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="{{ .Permalink }}">
-<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }} - {{ .Site.Params.description | truncate 40 }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}">
-<meta name="twitter:description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
-<meta name="twitter:image" content="{{ with .Params.cover.image }}{{ . | absURL }}{{ else }}{{ "images/og-default.svg" | absURL }}{{ end }}">
-
-{{- /* 额外的 SEO Meta */ -}}
-<meta name="robots" content="index, follow">
-{{- /* canonical：优先使用 frontmatter 显式指定的 canonical，其次用当前永久链接 */ -}}
-{{- $canonical := .Permalink }}
-{{- with .Params.canonical }}{{ $canonical = . }}{{ end }}
-<link rel="canonical" href="{{ $canonical }}">
-{{- /* 系列聚合页：把 series 作为 CollectionPage + ItemList 输出，聚合各专栏权重 */ -}}
-{{- if and .IsPage (index .Params.series 0) }}
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ .Title }}",
-    "description": "{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}",
-    "image": "{{ with .Params.cover.image }}{{ . | absURL }}{{ end }}",
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-    "author": { "@type": "Person", "name": "{{ .Site.Params.author }}" },
-    "publisher": {
-        "@type": "Organization",
-        "name": "{{ .Site.Title }}",
-        "logo": { "@type": "ImageObject", "url": "{{ "images/logo.svg" | absURL }}" }
-    },
-    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ $canonical }}" },
-    "isPartOf": {
-        "@type": "CreativeWorkSeries",
-        "name": "{{ index .Params.series 0 }}",
-        "url": "{{ (printf "/series/%s/" (urlize (index .Params.series 0))) | absURL }}"
-    }
-}
-</script>
+{{- /* 身份声明：把社交主页与本站绑定到同一作者（主题不输出 rel=me） */ -}}
+{{- range site.Params.socialIcons }}
+{{- if hasPrefix .url "http" }}<link rel="me" href="{{ .url }}">{{ end }}
 {{- end }}
 
-{{- /* 结构化数据 JSON-LD */ -}}
-{{- if .IsHome }}
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}",
-    "description": "{{ .Site.Params.description }}",
-    "potentialAction": {
-        "@type": "SearchAction",
-        "target": "{{ .Site.BaseURL }}search/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-    }
-}
-</script>
-{{- else if .IsPage }}
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ .Title }}",
-    "description": "{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . | plainify | truncate 160 }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}",
-    "image": "{{ with .Params.cover.image }}{{ . | absURL }}{{ end }}",
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-    "author": {
-        "@type": "Person",
-        "name": "{{ .Site.Params.author }}"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "{{ .Site.Title }}",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "{{ "images/logo.svg" | absURL }}"
-        }
-    },
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{ .Permalink }}"
-    }
-}
-</script>
-{{- else if .IsSection }}
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "{{ .Title }}",
-    "description": "{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}",
-    "url": "{{ .Permalink }}"
-}
-</script>
-{{- end }}
+{{- /* ===== 统一结构化数据：WebSite + Person + BlogPosting/CollectionPage + BreadcrumbList =====
+       用 @graph 和固定 @id 互相引用。只有带有效日期的文章才输出 BlogPosting，
+       专题页 / 归档页不会产出 0001 年的假日期。 */ -}}
+{{- $base := site.BaseURL -}}
+{{- $personId := printf "%s#person" $base -}}
+{{- $siteId := printf "%s#website" $base -}}
+{{- $sameAs := slice -}}
+{{- range site.Params.socialIcons -}}
+  {{- if hasPrefix .url "http" }}{{ $sameAs = $sameAs | append .url }}{{ end -}}
+{{- end -}}
+{{- $person := dict "@type" "Person" "@id" $personId "name" site.Params.author "url" (printf "%sabout/" $base) "jobTitle" site.Params.authorRole "knowsAbout" (slice "儒释道" "国学" "经典解读" "道家内观" "鬼谷子" "传统文化") -}}
+{{- if $sameAs }}{{ $person = merge $person (dict "sameAs" $sameAs) }}{{ end -}}
+{{- $website := dict "@type" "WebSite" "@id" $siteId "url" $base "name" site.Title "description" site.Params.description "inLanguage" "zh-CN" "publisher" (dict "@id" $personId) "author" (dict "@id" $personId) "potentialAction" (dict "@type" "SearchAction" "target" (dict "@type" "EntryPoint" "urlTemplate" (printf "%ssearch/?q={search_term_string}" $base)) "query-input" "required name=search_term_string") -}}
+{{- $graph := slice $website $person -}}
+{{- $isArticle := and .IsPage (gt .Date.Year 2000) -}}
 
-{{- /* ============ 统计分析脚本 ============ */ -}}
+{{- if $isArticle -}}
+  {{- $desc := .Description | default (.Summary | plainify | truncate 160) -}}
+  {{- $article := dict "@type" "BlogPosting" "@id" (printf "%s#article" .Permalink) "headline" .Title "name" .Title "description" $desc "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "inLanguage" "zh-CN" "author" (dict "@id" $personId) "publisher" (dict "@id" $personId) "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink) "isPartOf" (dict "@id" $siteId) -}}
+  {{- with .Params.cover.image }}{{ $article = merge $article (dict "image" (. | absURL)) }}{{ end -}}
+  {{- with .Params.series }}{{ $article = merge $article (dict "articleSection" (index . 0)) }}{{ end -}}
+  {{- $graph = $graph | append $article -}}
+  {{- $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "首页" "item" $base) -}}
+  {{- with .Params.categories -}}
+    {{- $cat := index . 0 -}}
+    {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" $cat "item" (printf "%scategories/%s/" $base ($cat | urlize))) -}}
+  {{- end -}}
+  {{- $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add (len $crumbs) 1) "name" .Title "item" .Permalink) -}}
+  {{- $graph = $graph | append (dict "@type" "BreadcrumbList" "@id" (printf "%s#breadcrumb" .Permalink) "itemListElement" $crumbs) -}}
+{{- else if not .IsHome -}}
+  {{- $type := "WebPage" -}}
+  {{- if or .IsSection (in (slice "archive" "hub" "list" "search") .Layout) }}{{ $type = "CollectionPage" }}{{ end -}}
+  {{- $collection := dict "@type" $type "@id" (printf "%s#webpage" .Permalink) "name" .Title "description" (.Description | default site.Params.description) "url" .Permalink "inLanguage" "zh-CN" "isPartOf" (dict "@id" $siteId) -}}
+  {{- $graph = $graph | append $collection -}}
+{{- end -}}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graph | jsonify | safeJS }}</script>
+
+{{- /* ============ 统计分析脚本（沿用原有配置） ============ */ -}}
 
 {{- /* 百度统计 */ -}}
 {{- with .Site.Params.analytics.baidu }}

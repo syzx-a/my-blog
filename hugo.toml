@@ -24,6 +24,16 @@ rssLimit = 50
   author = '实用哲学'
   description = '深入解读儒释道经典，分享哲学思考，传承千年智慧，启迪当代人生。探索《论语》《道德经》《金刚经》等经典的现代应用。'
   keywords = ['国学', '传统文化', '儒释道', '哲学', '智慧', '经典', '论语', '道德经', '金刚经', '修身养性']
+
+  # 品牌层配置（2026-11-05 信息架构升级）
+  # 注意：以下为扁平键，必须留在 [params] 的第一个子表之前
+  brandKicker = '实用哲学 · 识微堂'
+  brandTagline = '以经典为根，以日用为归'
+  brandLead = '把《论语》《道德经》《金刚经》《鬼谷子》读回今天的日子里。这里不把经典供在神坛上，只讲它怎么落在静坐、说话、做事上。'
+  authorRole = '传统文化研习者 · 内容创作者'
+  authorMotto = '古为今用，知行合一'
+  licenseName = 'CC BY 4.0'
+  licenseUrl = 'https://creativecommons.org/licenses/by/4.0/deed.zh-hans'
   defaultTheme = 'auto'
   ShowReadingTime = true
   ShowShareButtons = true
@@ -73,17 +83,23 @@ rssLimit = 50
   disableSpecial1stPost = false
   disableScrollToTop = false
 
+  # name 供主题匹配图标，title 是给读者看的名称
+  # TODO: 抖音 / B 站仍是占位地址，待补真实 ID 后替换
   [[params.socialIcons]]
     name = 'wechat'
+    title = '公众号 · 实用哲学'
     url = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=Mzk0NjQwNTU5Ng=='
   [[params.socialIcons]]
     name = 'douyin'
+    title = '抖音'
     url = 'https://www.douyin.com/user/MS4wLjABAAAA'
   [[params.socialIcons]]
     name = 'bilibili'
+    title = 'B 站'
     url = 'https://space.bilibili.com/'
   [[params.socialIcons]]
     name = 'email'
+    title = '邮件联系'
     url = 'mailto:601522876@qq.com'
 
   [params.fuseOpts]
@@ -95,13 +111,45 @@ rssLimit = 50
     minMatchCharLength = 0
     keys = ["title", "permalink", "summary", "content"]
 
-# 导航菜单：主导航6 项，其余收进「更多」
+# 首页「从这里开始」：按读者意图分流，而不是按时间倒序
+[[params.startHere]]
+  label = '想先静下来'
+  title = '道家十日内观之旅 · 总览'
+  url = '/posts/道家十日内观/00-总览/'
+  note = '十天次第，从浊沉清升到宇宙在手'
+[[params.startHere]]
+  label = '想把一部经典读透'
+  title = '静坐内观讲义'
+  url = '/posts/静坐内观讲义/'
+  note = '先答一个不好意思问出口的问题'
+[[params.startHere]]
+  label = '想学说话与识人'
+  title = '鬼谷子的术，根在哪里？'
+  url = '/posts/鬼谷子的术/01-鬼谷子其人其书/'
+  note = '《鬼谷子·捭阖》系列开篇'
+[[params.startHere]]
+  label = '想按专题系统读'
+  title = '浏览全部专题'
+  url = '/hubs/'
+  note = '内观修心 · 经典解读 · 实用智慧'
+[[params.startHere]]
+  label = '想随手翻一翻'
+  title = '全部文章'
+  url = '/allposts/'
+  note = '按年份归档，可就地筛选标题'
+
+# 导航菜单：主导航 + 其余收进「更多」
 [menu]
   [[menu.main]]
     identifier = 'posts'
     name = '经典解读'
     url = '/posts/'
     weight = 10
+  [[menu.main]]
+    identifier = 'hubs'
+    name = '专题'
+    url = '/hubs/'
+    weight = 15
   [[menu.main]]
     identifier = 'columns'
     name = '专栏'
@@ -166,11 +214,17 @@ rssLimit = 50
     url = '/friends/'
     weight = 75
   [[menu.main]]
+    identifier = 'allposts'
+    parent = 'more'
+    name = '全部文章'
+    url = '/allposts/'
+    weight = 76
+  [[menu.main]]
     identifier = 'rss'
     parent = 'more'
     name = 'RSS 订阅'
     url = '/index.xml'
-    weight = 76
+    weight = 77
   [[menu.main]]
     identifier = 'more'
     name = '更多'

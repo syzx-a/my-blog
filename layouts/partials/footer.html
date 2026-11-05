@@ -33,10 +33,15 @@
 
   <span class="footer-text">
     © {{ now.Year }} {{ .Site.Params.author }} ·
+    <a href="{{ "hubs/" | relURL }}">专题</a> ·
+    <a href="{{ "allposts/" | relURL }}">全部文章</a> ·
     <a href="{{ "columns/" | relURL }}">专栏</a> ·
     <a href="{{ "courses/" | relURL }}">课程</a> ·
     <a href="{{ "updates/" | relURL }}">更新</a> ·
     <a href="{{ "index.xml" | absURL }}">RSS</a>
+  </span>
+  <span class="footer-text">
+    文章以 <a href="{{ .Site.Params.licenseUrl }}" rel="license noopener noreferrer" target="_blank">{{ .Site.Params.licenseName }}</a> 授权，欢迎转载并注明出处
   </span>
   <span class="footer-text">
     Powered by
@@ -45,3 +50,4 @@
   </span>
 </footer>
 <script src="{{ "js/menu-dropdown.js" | relURL }}"></script>
+<script defer src="{{ "js/site-enhance.js" | relURL }}"></script>

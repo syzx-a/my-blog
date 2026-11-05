@@ -1,0 +1,42 @@
+{{ define "main" }}
+{{- /* 只收文章类页面，排除专题页 / 归档页 / 关于页等无日期的普通页 */ -}}
+{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") -}}
+<div class="sy-wrap sy-archive">
+  <header class="sy-page-head">
+    <p class="sy-kicker">ARCHIVE</p>
+    <h1>全部文章</h1>
+    <p class="sy-page-lead">{{ .Description }}</p>
+  </header>
+
+  {{- with .Content }}<div class="sy-prose sy-intro">{{ . }}</div>{{- end }}
+
+  <div class="sy-archive-tools">
+    <label class="sy-sr-only" for="sy-archive-filter">筛选文章标题</label>
+    <input type="search" id="sy-archive-filter" placeholder="输入关键词筛选标题…" autocomplete="off" spellcheck="false">
+    <span class="sy-archive-count" id="sy-archive-count">共 {{ len $all }} 篇</span>
+  </div>
+
+  <nav class="sy-year-nav" aria-label="按年份跳转">
+    {{- range $all.GroupByDate "2006" }}
+    <a href="#y-{{ .Key }}">{{ .Key }}</a>
+    {{- end }}
+  </nav>
+
+  {{- range $all.GroupByDate "2006" }}
+  <section class="sy-year" id="y-{{ .Key }}" data-year="{{ .Key }}">
+    <h2>{{ .Key }}<span>{{ len .Pages }} 篇</span></h2>
+    <ul class="sy-archive-list">
+      {{- range .Pages.ByDate.Reverse }}
+      <li class="sy-archive-item" data-title="{{ .Title | lower }}">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        {{- with .Params.categories }}<span class="sy-chip sy-chip-plain">{{ index . 0 }}</span>{{- end }}
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+
+  <p class="sy-empty" id="sy-archive-empty" hidden>没有匹配的文章，换个词试试。</p>
+</div>
+{{ end }}

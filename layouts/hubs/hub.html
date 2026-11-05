@@ -1,0 +1,119 @@
+{{ define "main" }}
+{{- $pages := partial "hub_pages.html" . -}}
+{{- $sorted := sort $pages "Date" "desc" -}}
+{{- $tone := .Params.tone | default "jade" -}}
+
+<article class="sy-hub tone-{{ $tone }}">
+  <header class="sy-hub-hero">
+    <div class="sy-wrap">
+      <nav class="sy-crumbs" aria-label="面包屑">
+        <a href="{{ "/" | relURL }}">首页</a><span>/</span>
+        <a href="{{ "hubs/" | relURL }}">专题</a><span>/</span>
+        <span aria-current="page">{{ .Title }}</span>
+      </nav>
+      <div class="sy-hub-hero-grid">
+        <div class="sy-hub-hero-copy">
+          <p class="sy-kicker">{{ .Params.kicker }}</p>
+          <h1 class="sy-hub-title">{{ .Title }}</h1>
+          <p class="sy-hub-lead">{{ .Params.lead }}</p>
+          <ul class="sy-hero-stats">
+            <li><strong>{{ len $pages }}</strong><span>篇文章</span></li>
+            <li><strong>{{ len (default (slice) .Params.seriesList) }}</strong><span>个连载系列</span></li>
+          </ul>
+          <div class="sy-hero-cta">
+            <a class="sy-btn sy-btn-solid" href="#start">从这里开始</a>
+            <a class="sy-btn sy-btn-ghost" href="{{ "allposts/" | relURL }}">全部文章</a>
+          </div>
+        </div>
+        <div class="sy-hub-mark" aria-hidden="true">{{ .Params.glyph }}</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="sy-wrap sy-hub-body">
+    {{- with .Params.start }}
+    <section class="sy-hub-section" id="start">
+      <div class="sy-sec-head"><h2>从这里开始</h2><p class="sy-muted">按你想解决的事挑一篇，不必按时间读</p></div>
+      <ol class="sy-steps">
+        {{- range $i, $x := . }}
+        <li>
+          <span class="sy-step-n">{{ printf "%02d" (add $i 1) }}</span>
+          <span class="sy-step-body">
+            <span class="sy-step-label">{{ index $x "label" }}</span>
+            <a href="{{ index $x "url" }}">{{ index $x "title" }}</a>
+            <small>{{ index $x "note" }}</small>
+          </span>
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+    {{- end }}
+
+    {{- with .Content }}
+    <section class="sy-hub-section sy-prose">
+      <div class="sy-sec-head"><h2>关于这个专题</h2></div>
+      {{ . }}
+    </section>
+    {{- end }}
+
+    {{- range $s := .Params.seriesList }}
+      {{- $key := index $s "key" -}}
+      {{- $grp := slice -}}
+      {{- range $p := $pages -}}
+        {{- $ps := $p.Params.series -}}
+        {{- if and $ps (in $ps $key) -}}{{- $grp = $grp | append $p -}}{{- end -}}
+      {{- end -}}
+      {{- if $grp -}}
+        {{- /* 按 slug 排序；无 slug 的文章用文件名兜底，避免 Page 集合排序取不到字段 */ -}}
+        {{- $keyed := slice -}}
+        {{- range $p := $grp -}}
+          {{- $ord := $p.Params.slug | default $p.File.ContentBaseName -}}
+          {{- $keyed = $keyed | append (dict "s" $ord "p" $p) -}}
+        {{- end -}}
+        {{- $keyed = sort $keyed "s" "asc" -}}
+    <section class="sy-hub-section">
+      <div class="sy-sec-head">
+        <h2>{{ index $s "name" }}</h2>
+        <p class="sy-muted">{{ index $s "note" }}</p>
+        <span class="sy-sec-count">{{ len $grp }} 篇</span>
+      </div>
+      <ol class="sy-series-grid">
+        {{- range $i, $x := $keyed }}
+        {{- $p := index $x "p" }}
+        <li>
+          <span class="sy-series-n">{{ printf "%02d" (add $i 1) }}</span>
+          <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+      {{- end -}}
+    {{- end }}
+
+    <section class="sy-hub-section" id="hub-all">
+      <div class="sy-sec-head">
+        <h2>专题全部文章</h2>
+        <span class="sy-sec-count">{{ len $pages }} 篇</span>
+      </div>
+      <div class="sy-card-grid">
+        {{- range first 24 $sorted }}
+        <article class="sy-card">
+          <div class="sy-card-meta">
+            {{- with .Params.categories }}
+            <a class="sy-chip" href="{{ (printf "categories/%s/" (index . 0 | urlize)) | relURL }}">{{ index . 0 }}</a>
+            {{- end }}
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          </div>
+          <h3 class="sy-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p class="sy-card-excerpt">{{ .Summary | plainify | truncate 110 }}</p>
+          <div class="sy-card-foot"><span>{{ .ReadingTime }} 分钟</span>{{- with .Params.videoId }}<span class="sy-video-tag">视频</span>{{- end }}</div>
+        </article>
+        {{- end }}
+      </div>
+      {{- if gt (len $pages) 24 }}
+      <p class="sy-more"><a href="{{ "allposts/" | relURL }}">还有 {{ sub (len $pages) 24 }} 篇，去全部文章查看 →</a></p>
+      {{- end }}
+    </section>
+  </div>
+</article>
+{{ end }}

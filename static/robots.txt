@@ -12,7 +12,19 @@ Disallow: /api/
 
 # 允许所有内容被索引
 Allow: /posts/
+Allow: /hubs/
+Allow: /allposts/
 Allow: /wisdom/
 Allow: /philosophy/
 Allow: /videos/
 Allow: /about/
+
+# ------------------------------------------------------------
+# 内容使用信号（Content Signals）
+# 本站为原创内容站，对三类使用作如下声明：
+#   search    = yes   允许建立搜索索引、展示链接与简短摘要
+#   ai-input  = 未声明 本站既不授予也不限制（AI 问答中引用请注明出处）
+#   ai-train  = 未声明 如需用于模型训练或微调，请先联系站方取得授权
+# 未声明的部分不构成对权利的放弃，依据 CC BY 4.0 许可处理：
+# https://creativecommons.org/licenses/by/4.0/deed.zh-hans
+# ------------------------------------------------------------
