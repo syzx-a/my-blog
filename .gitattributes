@@ -1,0 +1,2 @@
+# 构建脚本必须在 Linux 构建机上保持 LF，否则 #!/bin/bash\r 会导致部署失败
+build.sh text eol=lf
