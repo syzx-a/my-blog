@@ -1,0 +1,274 @@
+{{ define "main" }}
+{{- /* 课程中心（2026-11-06 重构）
+       内容全部来自 content/courses/_index.md 的数组字段，模板只负责排版。
+       后续加课＝在 courses 下加一项；页面级 FAQ / 后续说明在 faqs / plannedNote。
+       锚点带课程 id 后缀，多门课时不会撞 id。 */ -}}
+{{- $tone := .Params.tone | default "jade" -}}
+{{- $courses := .Params.courses | default slice -}}
+{{- $main := index $courses 0 -}}
+<div class="sy-wrap sy-courses tone-{{ $tone }}">
+
+  <header class="sy-page-head sy-courses-head">
+    <p class="sy-kicker">{{ .Params.kicker | default "COURSES" }}</p>
+    <h1>{{ .Params.pageTitle | default .Title }}</h1>
+    <p class="sy-page-lead">{{ .Params.pageLead | default .Description }}</p>
+  </header>
+
+  <nav class="sy-course-nav" aria-label="本页导航">
+    <a href="#hero-{{ $main.id }}">课程总览</a>
+    <a href="#features-{{ $main.id }}">课程特色</a>
+    <a href="#audience-{{ $main.id }}">适合谁</a>
+    <a href="#outline-{{ $main.id }}">课程大纲</a>
+    <a href="#catalog-{{ $main.id }}">逐分目录</a>
+    <a href="#outcomes-{{ $main.id }}">学完收获</a>
+    <a href="#teaching-{{ $main.id }}">授课方式</a>
+    <a href="#trials-{{ $main.id }}">试听课</a>
+    <a href="#enroll-{{ $main.id }}">报名方式</a>
+    <a href="#course-faq">常见问题</a>
+  </nav>
+
+  {{- range $c := $courses }}
+  <article class="sy-course" id="course-{{ $c.id }}">
+
+    <!-- ============ 课程主卡 ============ -->
+    <section class="sy-course-hero" id="hero-{{ $c.id }}" aria-labelledby="sy-course-title-{{ $c.id }}">
+      <div class="sy-course-hero-main">
+        <div class="sy-course-badges">
+          <span class="sy-chip sy-chip-live"><span class="sy-pulse" aria-hidden="true"></span>{{ $c.status }}</span>
+          <span class="sy-chip sy-chip-plain">{{ $c.kicker }}</span>
+        </div>
+        <h2 class="sy-course-title" id="sy-course-title-{{ $c.id }}">{{ $c.name }}</h2>
+        <p class="sy-course-lead">{{ $c.lead }}</p>
+        <blockquote class="sy-course-quote">
+          <p>{{ $c.quote }}</p>
+          <footer>—— {{ $c.quoteFrom }}</footer>
+        </blockquote>
+        <div class="sy-course-cta">
+          <a class="sy-btn sy-btn-solid" href="#trials-{{ $c.id }}">预约试听课</a>
+          <a class="sy-btn sy-btn-ghost" href="#outline-{{ $c.id }}">查看完整大纲</a>
+        </div>
+        <p class="sy-course-status-note">{{ $c.statusNote }}</p>
+      </div>
+
+      <aside class="sy-course-panel" aria-label="课程速览">
+        <div class="sy-course-panel-mark" aria-hidden="true">{{ $c.glyph }}</div>
+        <p class="sy-course-panel-label">课程速览</p>
+        <ul class="sy-course-stats">
+          {{- range $c.stats }}
+          <li><strong>{{ .num }}</strong><span>{{ .label }}</span></li>
+          {{- end }}
+        </ul>
+        <div class="sy-course-panel-foot">
+          <span>课程节奏</span>
+          <strong>{{ $c.teaching.pace }}</strong>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ============ 这门课要解决什么问题 ============ -->
+    <section class="sy-course-section" id="problem-{{ $c.id }}">
+      <div class="sy-sec-head"><h2>{{ $c.problem.title }}</h2></div>
+      <div class="sy-prose">
+        {{- range $c.problem.paragraphs }}<p>{{ . }}</p>{{- end }}
+      </div>
+    </section>
+
+    <!-- ============ 课程特色 ============ -->
+    <section class="sy-course-section" id="features-{{ $c.id }}">
+      <div class="sy-sec-head">
+        <h2>课程特色</h2>
+        <span class="sy-sec-count">共 {{ len $c.features }} 条</span>
+      </div>
+      <div class="sy-feature-grid">
+        {{- range $c.features }}
+        <article class="sy-feature">
+          <span class="sy-feature-glyph" aria-hidden="true">{{ .glyph }}</span>
+          <h3>{{ .title }}</h3>
+          <p>{{ .body }}</p>
+        </article>
+        {{- end }}
+      </div>
+    </section>
+
+    <!-- ============ 适合谁 ============ -->
+    <section class="sy-course-section" id="audience-{{ $c.id }}">
+      <div class="sy-sec-head"><h2>适合谁</h2></div>
+      <div class="sy-audience-list">
+        {{- range $c.audience }}
+        <div class="sy-audience">
+          <span class="sy-audience-who">{{ .who }}</span>
+          <span class="sy-audience-value">{{ .value }}</span>
+        </div>
+        {{- end }}
+      </div>
+    </section>
+
+    <!-- ============ 课程大纲 ============ -->
+    <section class="sy-course-section" id="outline-{{ $c.id }}">
+      <div class="sy-sec-head">
+        <h2>{{ $c.outline.title }}</h2>
+        <span class="sy-sec-count">六阶段 · 39 讲次</span>
+      </div>
+      <p class="sy-course-inline-note">{{ $c.outline.note }}</p>
+      <ol class="sy-stages">
+        {{- range $s := $c.outline.stages }}
+        <li class="sy-stage">
+          <span class="sy-stage-no" aria-hidden="true">{{ $s.no }}</span>
+          <div class="sy-stage-body">
+            <div class="sy-stage-head">
+              <h3>{{ $s.name }}</h3>
+              <span class="sy-stage-count">{{ $s.sessions }} 讲</span>
+            </div>
+            <p class="sy-stage-scope">{{ $s.scope }}</p>
+            <p class="sy-stage-focus">{{ $s.focus }}</p>
+          </div>
+        </li>
+        {{- end }}
+      </ol>
+      <p class="sy-course-inline-note sy-course-inline-note-strong">{{ $c.outline.assembliesNote }}</p>
+      <div class="sy-assembly-grid">
+        {{- range $c.outline.assemblies }}
+        <div class="sy-assembly">
+          <div class="sy-assembly-head"><strong>{{ .name }}</strong><span>{{ .range }}</span></div>
+          <p>{{ .theme }}</p>
+          <blockquote>{{ .key }}</blockquote>
+        </div>
+        {{- end }}
+      </div>
+    </section>
+
+    <!-- ============ 逐分目录 ============ -->
+    <section class="sy-course-section" id="catalog-{{ $c.id }}">
+      <details class="sy-catalog">
+        <summary>
+          <span>{{ $c.catalog.title }}</span>
+          <span class="sy-catalog-hint">展开全部 →</span>
+        </summary>
+        <div class="sy-catalog-groups">
+          {{- range $g := $c.catalog.groups }}
+          <div class="sy-catalog-group">
+            <h4>{{ $g.label }}{{ with $g.note }}<small>{{ . }}</small>{{ end }}</h4>
+            <ul class="sy-catalog-items">
+              {{- range $i, $name := $g.items }}
+              <li>
+                {{- if $g.start }}<span class="sy-catalog-n">{{ add $i $g.start }}</span>{{- end }}
+                <span>{{ $name }}</span>
+              </li>
+              {{- end }}
+            </ul>
+          </div>
+          {{- end }}
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ 学完你会得到什么 ============ -->
+    <section class="sy-course-section" id="outcomes-{{ $c.id }}">
+      <div class="sy-sec-head"><h2>学完你会得到什么</h2></div>
+      <ol class="sy-outcome-grid">
+        {{- range $i, $o := $c.outcomes }}
+        <li>
+          <span class="sy-outcome-n" aria-hidden="true">{{ add $i 1 }}</span>
+          <strong>{{ $o.title }}</strong>
+          <p>{{ $o.body }}</p>
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+
+    <!-- ============ 授课方式 ============ -->
+    <section class="sy-course-section" id="teaching-{{ $c.id }}">
+      <div class="sy-sec-head"><h2>授课方式</h2></div>
+      <div class="sy-teaching-grid">
+        <div class="sy-prose">
+          {{- range $c.teaching.paragraphs }}<p>{{ . }}</p>{{- end }}
+        </div>
+        <aside class="sy-teaching-card">
+          <p class="sy-kicker">课程节奏</p>
+          <strong>{{ $c.teaching.pace }}</strong>
+          <p>{{ $c.teaching.paceNote }}</p>
+        </aside>
+      </div>
+      <ul class="sy-format-list" aria-label="教学形式">
+        {{- range $c.teaching.formats }}<li>{{ . }}</li>{{- end }}
+      </ul>
+    </section>
+
+    <!-- ============ 试听课 ============ -->
+    <section class="sy-course-section sy-trials" id="trials-{{ $c.id }}">
+      <div class="sy-sec-head">
+        <h2>试听课</h2>
+        <span class="sy-sec-count">{{ $c.trials.duration }}</span>
+      </div>
+      <p class="sy-prose sy-trials-intro">{{ $c.trials.intro }}</p>
+      <p class="sy-trials-label">试听主题（可选）</p>
+      <div class="sy-trial-grid">
+        {{- range $i, $t := $c.trials.topics }}
+        <article class="sy-trial">
+          <span class="sy-trial-n" aria-hidden="true">0{{ add $i 1 }}</span>
+          <h3>{{ $t.title }}</h3>
+          <p>{{ $t.body }}</p>
+        </article>
+        {{- end }}
+      </div>
+      <a class="sy-btn sy-btn-solid" href="#enroll-{{ $c.id }}">去报名试听 →</a>
+    </section>
+
+    <!-- ============ 报名方式 ============ -->
+    <section class="sy-course-section sy-enroll" id="enroll-{{ $c.id }}">
+      <div class="sy-sec-head"><h2>报名方式</h2></div>
+      <div class="sy-enroll-grid">
+        {{- range $c.enroll.channels }}
+        <div class="sy-enroll-card">
+          <span class="sy-enroll-label">{{ .label }}</span>
+          {{- if .href }}
+          <a class="sy-enroll-value" href="{{ .href }}">{{ .value }}</a>
+          {{- else }}
+          <strong class="sy-enroll-value">{{ .value }}</strong>
+          {{- end }}
+          {{- with .note }}<p>{{ . }}</p>{{- end }}
+        </div>
+        {{- end }}
+      </div>
+      <div class="sy-revision sy-enroll-note">
+        <span class="sy-revision-label">{{ $c.enroll.noteTitle }}</span>
+        <span>{{ $c.enroll.note }}</span>
+      </div>
+    </section>
+
+    <!-- Course 结构化数据：主题与全站 @graph 均不输出此类型，独立块不冲突 -->
+    <script type="application/ld+json">
+    {{- dict "@context" "https://schema.org" "@type" "Course" "@id" (printf "%s#course-%s" $.Permalink $c.id) "name" $c.name "description" $c.lead "url" $.Permalink "inLanguage" "zh-CN" "provider" (dict "@type" "Person" "name" site.Params.author "url" site.BaseURL) | jsonify | safeJS -}}
+    </script>
+  </article>
+  {{- end }}
+
+  <!-- ============ 常见问题 ============ -->
+  <section class="sy-course-section" id="course-faq">
+    <div class="sy-sec-head"><h2>常见问题</h2></div>
+    <div class="sy-faq-list">
+      {{- range .Params.faqs }}
+      <details class="sy-faq">
+        <summary>{{ .q }}</summary>
+        <p>{{ .a }}</p>
+      </details>
+      {{- end }}
+    </div>
+  </section>
+
+  <!-- ============ 后续课程 ============ -->
+  {{- with .Params.plannedNote }}
+  <div class="sy-start-card sy-pending sy-course-planned">
+    <div class="sy-start-label"><span class="sy-seal" aria-hidden="true">续</span>还会有别的课吗</div>
+    <div class="sy-prose"><p>{{ . }}</p></div>
+  </div>
+  {{- end }}
+
+  <div class="sy-hubs-foot">
+    <a class="sy-btn sy-btn-ghost" href="{{ "columns/" | relURL }}">免费专栏</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "hubs/jingdian/" | relURL }}">经典解读</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "works/" | relURL }}">著述</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "about/" | relURL }}">关于与研究方向</a>
+  </div>
+</div>
+{{ end }}
