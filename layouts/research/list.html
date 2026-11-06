@@ -1,0 +1,80 @@
+{{ define "main" }}
+{{- /* 研究区列表页（2026-11-06 骨架）
+       方向卡片来自 content/research/_index.md 的 researchTracks，
+       文章列表自动读取本 section 的普通页；无文章时给筹备说明，不渲染空列表。 */ -}}
+{{- $articles := .Pages -}}
+<div class="sy-wrap sy-research-index tone-jade">
+  <header class="sy-page-head">
+    <p class="sy-kicker">RESEARCH</p>
+    <h1>研究</h1>
+    <p class="sy-page-lead">{{ .Description }}</p>
+  </header>
+
+  {{- with .Content }}<div class="sy-prose sy-intro">{{ . }}</div>{{- end }}
+
+  <section class="sy-research-section" aria-labelledby="sy-tracks">
+    <div class="sy-sec-head">
+      <h2 id="sy-tracks">研究方向</h2>
+      <span class="sy-sec-count">按做法分，不按学科分</span>
+    </div>
+    <div class="sy-card-grid">
+      {{- range $i, $t := .Params.researchTracks }}
+      <article class="sy-card sy-track-card">
+        <div class="sy-card-meta"><span class="sy-chip sy-chip-plain">{{ printf "%02d" (add $i 1) }}</span></div>
+        <h3 class="sy-card-title">{{ $t.name }}</h3>
+        <p class="sy-card-excerpt">{{ $t.note }}</p>
+        <div class="sy-card-foot">
+          {{- range $t.tags }}<span>{{ . }}</span>{{- end }}
+        </div>
+      </article>
+      {{- end }}
+    </div>
+  </section>
+
+  <section class="sy-research-section" aria-labelledby="sy-research-list">
+    <div class="sy-sec-head">
+      <h2 id="sy-research-list">研究文章</h2>
+      {{- if $articles }}<span class="sy-sec-count">共 {{ len $articles }} 篇</span>{{- end }}
+    </div>
+    {{- $samples := where $articles "Params.sample" true -}}
+    {{- if $samples }}<p class="sy-sample-note">版式样稿：眼下这一篇用来检验文章版式、修订记录与分类路径，引文和年份仍在核校。定本改写完成后陆续替换。</p>{{- end }}
+    {{- if $articles }}
+    <div class="sy-card-grid">
+      {{- range $articles.ByDate.Reverse }}
+      <article class="sy-card">
+        <div class="sy-card-meta">
+          {{- with .Params.categories }}
+          <a class="sy-chip" href="{{ (printf "categories/%s/" (index . 0 | urlize)) | relURL }}">{{ index . 0 }}</a>
+          {{- end }}
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          {{- with .Params.version }}<span class="sy-chip sy-chip-plain">{{ . }}</span>{{- end }}
+          {{- if .Params.sample }}<span class="sy-chip sy-chip-plain">样稿</span>{{- end }}
+        </div>
+        <h3 class="sy-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="sy-card-excerpt">{{ .Summary | plainify | truncate 110 }}</p>
+        <div class="sy-card-foot">
+          <span>{{ .ReadingTime }} 分钟</span>
+          {{- with .Params.revisionNote }}<span>{{ . }}</span>{{- end }}
+        </div>
+      </article>
+      {{- end }}
+    </div>
+    {{- else }}
+    <div class="sy-start-card sy-pending">
+      <div class="sy-start-label"><span class="sy-seal" aria-hidden="true">辑</span>正在整理</div>
+      <div class="sy-prose">
+        <h3>首批定本还在改写</h3>
+        <p>五个方向先立在这里，文章到一篇上一篇。眼下改的是方法层的旧稿：怎么读原典、怎么核引文、怎么判断一个影响链条能不能成立、证据不够时该把话说到什么分寸。</p>
+        <p>这是定本区，不放草稿和摘录。想看已写成的解读，去<a href="{{ "hubs/" | relURL }}">专题</a>或<a href="{{ "allposts/" | relURL }}">全部文章</a>。</p>
+      </div>
+    </div>
+    {{- end }}
+  </section>
+
+  <div class="sy-hubs-foot">
+    <a class="sy-btn sy-btn-ghost" href="{{ "about/" | relURL }}">关于与研究方向</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "works/" | relURL }}">著述</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "allposts/" | relURL }}">全部文章</a>
+  </div>
+</div>
+{{ end }}

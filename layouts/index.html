@@ -1,5 +1,5 @@
 {{- define "main" -}}
-{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") -}}
+{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio" "research") -}}
 {{- $hubs := (site.GetPage "hubs").Pages.ByWeight -}}
 {{- $recent := first 6 (sort $all "Date" "desc") -}}
 

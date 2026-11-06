@@ -1,0 +1,76 @@
+{{ define "main" }}
+{{- /* 著述单页（2026-11-06 骨架）
+       书目来自 content/works.md 的 books 数组；后续加书只改 content，不动模板。
+       五项固定结构：书名 / 状态 / 写作缘起 / 目录 / 可公开试读。 */ -}}
+<div class="sy-wrap sy-works tone-gold">
+  <header class="sy-page-head">
+    <p class="sy-kicker">WORKS</p>
+    <h1>著述</h1>
+    <p class="sy-page-lead">{{ .Description }}</p>
+  </header>
+
+  {{- with .Content }}<div class="sy-prose sy-intro">{{ . }}</div>{{- end }}
+
+  <section class="sy-research-section" aria-labelledby="sy-books">
+    <div class="sy-sec-head">
+      <h2 id="sy-books">书目</h2>
+      <span class="sy-sec-count">共 {{ len .Params.books }} 部</span>
+    </div>
+    {{- with .Params.demoNote }}<p class="sy-sample-note">{{ . }}</p>{{- end }}
+    <div class="sy-book-list">
+      {{- range .Params.books }}
+      <article class="sy-book">
+        <div class="sy-book-head">
+          <h3>{{ .title }}</h3>
+          <div class="sy-book-tags">
+            {{- if .demo }}<span class="sy-chip sy-chip-plain">结构样稿</span>{{- end }}
+            <span class="sy-chip">{{ .status }}</span>
+          </div>
+        </div>
+
+        <div class="sy-book-block">
+          <h4>写作缘起</h4>
+          {{- with .origin }}<p>{{ . }}</p>{{- else }}<p class="sy-muted">待补</p>{{- end }}
+        </div>
+
+        <div class="sy-book-block">
+          <h4>目录</h4>
+          {{- if .toc }}
+          <ol>{{ range .toc }}<li>{{ . }}</li>{{ end }}</ol>
+          {{- with .tocNote }}<p class="sy-muted">{{ . }}</p>{{- end }}
+          {{- else }}
+          <p class="sy-muted">目录待定稿后补。</p>
+          {{- end }}
+        </div>
+
+        <div class="sy-book-block">
+          <h4>可公开试读</h4>
+          {{- if .sample }}
+          <ul>{{ range .sample }}<li><a href="{{ .url }}">{{ .title }}</a></li>{{ end }}</ul>
+          {{- with .sampleNote }}<p class="sy-muted">{{ . }}</p>{{- end }}
+          {{- else }}
+          <p class="sy-muted">试读范围待确认后补。</p>
+          {{- end }}
+        </div>
+
+        {{- with .note }}<p class="sy-book-note">{{ . }}</p>{{- end }}
+      </article>
+      {{- end }}
+    </div>
+  </section>
+
+  <div class="sy-start-card sy-pending">
+    <div class="sy-start-label"><span class="sy-seal" aria-hidden="true">补</span>待补</div>
+    <div class="sy-prose">
+      <h3>其余书目尚未圈定</h3>
+      <p>库里的书目卡多数是计划与编纂卡，不等于已成书的作品。等确认哪些可以公开，一次补一到两部，状态随进度更新。</p>
+    </div>
+  </div>
+
+  <div class="sy-hubs-foot">
+    <a class="sy-btn sy-btn-ghost" href="{{ "about/" | relURL }}">关于与研究方向</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "research/" | relURL }}">研究</a>
+    <a class="sy-btn sy-btn-ghost" href="{{ "allposts/" | relURL }}">全部文章</a>
+  </div>
+</div>
+{{ end }}

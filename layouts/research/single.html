@@ -1,0 +1,149 @@
+{{ define "main" }}
+{{- /* 研究文章单页（2026-11-06 骨架）
+       沿用 posts/single.html 的两列版式，但不做 hub 反查：研究文章按作者脉络组织，
+       不属于任何按读者意图划分的专题。额外展示 version / revisionNote。 */ -}}
+{{- $self := . -}}
+{{- $related := first 4 (sort (where (where site.RegularPages "Type" "research") "Permalink" "!=" .Permalink) "Date" "desc") -}}
+
+<div class="sy-read-progress" aria-hidden="true"><span></span></div>
+
+<article class="post-single sy-post">
+  <div class="sy-post-wrap">
+    <div class="sy-post-layout">
+      <div class="sy-post-main">
+        <header class="post-header">
+          {{ partial "breadcrumbs.html" . }}
+          <h1 class="post-title">
+            {{ .Title }}
+            {{ if .Draft }}<span class="draft-badge">草稿</span>{{ end }}
+          </h1>
+
+          {{ if .Description }}<div class="post-description">{{ .Description }}</div>{{ end }}
+
+          <div class="post-meta">
+            <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006年1月2日" }}</time>
+            {{ if .Params.tags }}
+            <div class="post-tags">
+              {{ range .Params.tags }}<a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">#{{ . }}</a>{{ end }}
+            </div>
+            {{ end }}
+          </div>
+
+          <div class="sy-meta-line">
+            <span>{{ .ReadingTime }} 分钟</span>
+            <span>约 {{ countrunes .Plain }} 字</span>
+            {{- with .Params.categories }}<span>分类：{{ index . 0 }}</span>{{- end }}
+            {{- with .Params.series }}<span>系列：{{ index . 0 }}</span>{{- end }}
+          </div>
+
+          <div class="sy-post-chips tone-gold">
+            <a href="{{ "research/" | relURL }}">研究区</a>
+          </div>
+
+          {{- /* cover 必须交给主题 partial 渲染，不可直接输出 .Params.cover（map 会变 #ZgotmplZ） */ -}}
+          {{- if .Params.cover }}
+          {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" false) }}
+          {{- end }}
+        </header>
+
+        {{- if .Params.sample }}
+        <p class="sy-sample-note">版式样稿：内容仍在核校，引文与年份待核，暂不作为定本引用。改写完成后会在这里更新版本记录。</p>
+        {{- end }}
+
+        {{- if or .Params.version .Params.revisionNote }}
+        <div class="sy-revision">
+          <span class="sy-revision-label">版本</span>
+          {{- with .Params.version }}<strong>{{ . }}</strong>{{- end }}
+          {{- with .Params.revisionNote }}<span>{{ . }}</span>{{- end }}
+          <span class="sy-revision-hint">观点会演进，修订记在这里，不静默替换。</span>
+        </div>
+        {{- end }}
+
+        {{- with .TableOfContents }}
+        <details class="sy-toc-mobile">
+          <summary>本文目录</summary>
+          {{ . }}
+        </details>
+        {{- end }}
+
+        <div class="post-content">{{ .Content }}</div>
+
+        <footer class="post-footer">
+          {{- with .Params.tags }}
+          <ul class="post-tags">
+            {{ range . }}<li><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">{{ . }}</a></li>{{ end }}
+          </ul>
+          {{- end }}
+
+          {{- with .Params.series }}
+            {{- $seriesName := index . 0 -}}
+            {{- $sameSeries := where $.Site.RegularPages "Params.series" "intersect" . -}}
+            {{- if gt (len $sameSeries) 1 }}
+          <section class="post-series">
+            <h3>本系列文章 · {{ $seriesName }}</h3>
+            <ol class="series-list">
+              {{- range sort $sameSeries "Params.slug" "asc" }}
+              <li{{ if eq .RelPermalink $self.RelPermalink }} class="current"{{ end }}>
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                {{- if eq .RelPermalink $self.RelPermalink }}<span class="series-current-marker">当前</span>{{ end }}
+              </li>
+              {{- end }}
+            </ol>
+          </section>
+            {{- end }}
+          {{- end }}
+
+          <a class="sy-hub-banner tone-gold" href="{{ "research/" | relURL }}">
+            <span class="sy-hub-banner-icon" aria-hidden="true">研</span>
+            <span class="sy-hub-banner-body">
+              <small>本文收录于</small>
+              <strong>研究</strong>
+              <span>文本辨析、影响研究、文献考据与比较衡鉴的定本区。</span>
+            </span>
+          </a>
+
+          <aside class="sy-author-card">
+            <div class="sy-author-avatar" aria-hidden="true">用</div>
+            <div class="sy-author-body">
+              <p class="sy-kicker">关于作者</p>
+              <h2 class="sy-author-name">{{ site.Params.author }} · {{ site.Params.authorRole }}</h2>
+              <p class="sy-author-bio">{{ site.Params.authorMotto }}。{{ site.Params.brandLead }}</p>
+              <a href="{{ "about/" | relURL }}">了解更多 →</a>
+            </div>
+          </aside>
+
+          {{- if or .NextInSection .PrevInSection }}
+          <nav class="sy-post-nav" aria-label="相邻文章">
+            {{ with .NextInSection }}
+            <a href="{{ .Permalink }}"><small>上一篇</small><strong>{{ .Title }}</strong></a>
+            {{ end }}
+            {{ with .PrevInSection }}
+            <a href="{{ .Permalink }}"><small>下一篇</small><strong>{{ .Title }}</strong></a>
+            {{ end }}
+          </nav>
+          {{- end }}
+
+          {{- if $related }}
+          <section class="sy-post-footer-section">
+            <h2>延伸阅读</h2>
+            <p class="sy-muted">研究区里的其他定本</p>
+            <div class="sy-related-grid">
+              {{- range $related }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{- end }}
+            </div>
+          </section>
+          {{- end }}
+        </footer>
+      </div>
+
+      {{- with .TableOfContents }}
+      <aside class="sy-toc-side" aria-label="本文目录">
+        <div class="sy-toc-sticky">
+          <p class="sy-toc-title">本文目录</p>
+          {{ . }}
+        </div>
+      </aside>
+      {{- end }}
+    </div>
+  </div>
+</article>
+{{ end }}

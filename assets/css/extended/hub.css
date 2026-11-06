@@ -293,3 +293,41 @@ body.sy-wide .footer { max-width: 1180px; }
   .sy-toc-mobile li { padding: 3px 0; }
   .sy-toc-mobile a { color: var(--sy-ink-2); text-decoration: none; }
 }
+
+/* ============================================================
+   研究区 / 著述页（2026-11-06 骨架）
+   只新增专属类，不改上面已上线的组件；颜色沿用主题变量，暗色模式自动适配。
+   ============================================================ */
+.sy-research-section { margin: clamp(34px, 5vw, 58px) 0; }
+.sy-track-card .sy-card-foot { flex-wrap: wrap; }
+.sy-track-card .sy-card-foot span:not(:last-child)::after { content: "·"; margin-left: 10px; color: var(--sy-line-2); }
+.sy-pending { margin-top: 18px; }
+.sy-pending .sy-prose { max-width: 100%; }
+.sy-pending .sy-prose h3 { margin-top: 0; color: var(--sy-ink); font-family: var(--sy-serif); font-size: 1.2rem; }
+
+.sy-revision { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 18px 0 26px; padding: 12px 16px; border-left: 3px solid var(--sy-tone, var(--sy-gold)); border-radius: 6px; background: var(--sy-surface-2); font-size: 0.86rem; color: var(--sy-ink-2); }
+.sy-revision-label { padding: 2px 9px; border-radius: 999px; background: var(--sy-tone-soft, var(--sy-gold-soft)); color: var(--sy-tone, var(--sy-gold)); font-size: 0.75rem; font-weight: 600; }
+.sy-revision strong { color: var(--sy-ink); font-family: var(--sy-serif); }
+.sy-revision-hint { margin-left: auto; color: var(--sy-muted); }
+
+.sy-book-list { display: grid; gap: 18px; }
+.sy-book { padding: clamp(20px, 3vw, 30px); border: 1px solid var(--sy-line); border-radius: var(--sy-radius); background: var(--sy-surface); }
+.sy-book-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.sy-book-head h3 { margin: 0; color: var(--sy-ink); font-family: var(--sy-serif); font-size: clamp(1.15rem, 2.4vw, 1.45rem); line-height: 1.5; }
+.sy-book-head .sy-chip { flex: none; }
+.sy-book-block { padding: 14px 0; border-top: 1px solid var(--sy-line); }
+.sy-book-block h4 { margin: 0 0 8px; color: var(--sy-tone, var(--sy-gold)); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; }
+.sy-book-block p { margin: 0; color: var(--sy-ink-2); font-size: 0.94rem; line-height: 1.85; }
+.sy-book-block ol, .sy-book-block ul { margin: 0; padding-left: 20px; color: var(--sy-ink-2); font-size: 0.94rem; line-height: 1.9; }
+.sy-book-block a { color: var(--sy-jade); }
+.sy-book-note { margin: 16px 0 0; color: var(--sy-muted); font-size: 0.86rem; line-height: 1.8; }
+
+@media (max-width: 600px) {
+  .sy-revision-hint { margin-left: 0; flex-basis: 100%; }
+  .sy-book-head { flex-direction: column; align-items: flex-start; }
+}
+
+/* 样稿提示条与书目标签（2026-11-06 上线样稿阶段，去掉 sample/demo 字段即自动消失） */
+.sy-sample-note { margin: 0 0 18px; padding: 11px 15px; border-left: 3px solid var(--sy-tone, var(--sy-gold)); border-radius: 6px; background: var(--sy-surface-2); color: var(--sy-ink-2); font-size: 0.86rem; line-height: 1.8; }
+.sy-book-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.sy-book-block .sy-muted { margin-top: 8px; }

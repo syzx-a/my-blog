@@ -30,7 +30,7 @@ rssLimit = 50
   brandKicker = '实用哲学 · 识微堂'
   brandTagline = '以经典为根，以日用为归'
   brandLead = '把《论语》《道德经》《金刚经》《鬼谷子》读回今天的日子里。这里不把经典供在神坛上，只讲它怎么落在静坐、说话、做事上。'
-  authorRole = '传统文化研习者 · 内容创作者'
+  authorRole = '传统文化研究者 · 经典思想辨析'
   authorMotto = '古为今用，知行合一'
   licenseName = 'CC BY 4.0'
   licenseUrl = 'https://creativecommons.org/licenses/by/4.0/deed.zh-hans'
@@ -150,26 +150,43 @@ rssLimit = 50
     name = '专题'
     url = '/hubs/'
     weight = 15
+  # 2026-11-06 P2 骨架：作者脉络两个入口。内容后续补，但页面本身有实质说明，不是空栏目。
   [[menu.main]]
-    identifier = 'columns'
-    name = '专栏'
-    url = '/columns/'
+    identifier = 'research'
+    name = '研究'
+    url = '/research/'
     weight = 20
+  [[menu.main]]
+    identifier = 'works'
+    name = '著述'
+    url = '/works/'
+    weight = 25
   [[menu.main]]
     identifier = 'courses'
     name = '课程'
     url = '/courses/'
     weight = 30
+  # 2026-11-06 定位升级：专栏 / 儒释道 / 哲学思考 已并入专题或降级到「更多」，
+  # 腾出的位交给「研究」「著述」；页面与 URL 全部保留（不删页、无需 aliases）。
+  # 主导航 6 项，相对升级前的 7 项净增 0。
+  [[menu.main]]
+    identifier = 'columns'
+    parent = 'more'
+    name = '专栏'
+    url = '/columns/'
+    weight = 78
   [[menu.main]]
     identifier = 'wisdom'
+    parent = 'more'
     name = '儒释道'
     url = '/wisdom/'
-    weight = 40
+    weight = 79
   [[menu.main]]
     identifier = 'philosophy'
+    parent = 'more'
     name = '哲学思考'
     url = '/philosophy/'
-    weight = 50
+    weight = 80
   [[menu.main]]
     identifier = 'about'
     name = '关于'

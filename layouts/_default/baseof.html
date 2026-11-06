@@ -19,7 +19,7 @@
 {{- /* 新版式页面（品牌首页 / 专题 / 归档 / 文章）需要突破 PaperMod 默认 768px 的
        .main / .footer 上限，否则 1120px 的组件会被压成窄条、两侧留白过大。
        其余页面（about / columns / courses 等）保持主题原样，避免影响既有排版。 */ -}}
-{{- $wide := or .IsHome (eq .Type "hubs") (eq .Type "posts") (eq .Layout "archive") -}}
+{{- $wide := or .IsHome (eq .Type "hubs") (eq .Type "posts") (eq .Type "research") (eq .Layout "archive") (eq .Layout "works") -}}
 {{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
 <body class="list{{ if $wide }} sy-wide{{ end }}" id="top">
 {{- else }}

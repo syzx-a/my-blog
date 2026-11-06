@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- /* 只收文章类页面，排除专题页 / 归档页 / 关于页等无日期的普通页 */ -}}
-{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio") -}}
+{{- $all := where site.RegularPages "Type" "in" (slice "posts" "philosophy" "wisdom" "videos" "audio" "research") -}}
 <div class="sy-wrap sy-archive">
   <header class="sy-page-head">
     <p class="sy-kicker">ARCHIVE</p>
